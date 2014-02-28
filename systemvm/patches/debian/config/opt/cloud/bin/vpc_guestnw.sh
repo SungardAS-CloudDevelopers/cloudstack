@@ -30,8 +30,9 @@ then
 fi
 
 usage() {
-  printf "Usage:\n %s -A  -d <dev> -i <ip address> -g <gateway> -m <network mask> -s <dns ip> -e < domain> [-f] \n" $(basename $0) >&2
+  printf "Usage:\n %s -A -d <dev> -i <ip address> -g <gateway> -m <network mask> -s <dns ip> -e < domain> [-f] \n" $(basename $0) >&2
   printf " %s -D -d <dev> -i <ip address> \n" $(basename $0) >&2
+#TODO add additional usage patterns to correspond to filters below.
 }
 
 
@@ -221,51 +222,65 @@ destroy_guest_network() {
 iflag=0
 mflag=0
 nflag=0
+reduniflag=0
+redundevflag=0
 dflag=
 gflag=
 Cflag=
 Dflag=
+Rflag=
 
 op=""
 
 
-while getopts 'CDn:m:d:i:g:s:e:' OPTION
+while getopts 'CDRn:m:d:i:g:s:e:r:p:' OPTION
 do
   case $OPTION in
-  C)	Cflag=1
-		op="-C"
-		;;
-  D)	Dflag=1
-		op="-D"
-		;;
-  n)	nflag=1
-		subnet="$OPTARG"
-		;;
-  m)	mflag=1
-		mask="$OPTARG"
-		;;
-  d)	dflag=1
-  		dev="$OPTARG"
-  		;;
-  i)	iflag=1
-		ip="$OPTARG"
-  		;;
-  g)	gflag=1
-  		gw="$OPTARG"
-                ;;
-  s)    sflag=1
-                DNS="$OPTARG"
-                ;;
-  e)    eflag=1
-		DOMAIN="$OPTARG"
-  		;;
-  ?)	usage
-                unlock_exit 2 $lock $locked
-		;;
+	  C)	Cflag=1
+			op="-C"
+			;;
+	  D)	Dflag=1
+			op="-D"
+			;; 
+	 R)     Rflag=1
+			op="-R"
+			;;		
+	  n)	nflag=1
+			subnet="$OPTARG"
+			;;
+	  m)	mflag=1
+			mask="$OPTARG"
+			;;
+	  d)	dflag=1
+	  		dev="$OPTARG"
+	  		;;
+	p)		redundevflag=1
+	  		redundev="$OPTARG"
+	  		;;
+	  i)	iflag=1
+			ip="$OPTARG"
+	  		;;
+	r)	reduniflag=1
+			redunip="$OPTARG"
+	  		;;
+	  g)	gflag=1
+	  		gw="$OPTARG"
+	                ;;
+	  s)    sflag=1
+	                DNS="$OPTARG"
+	                ;;
+	  e)    eflag=1
+			DOMAIN="$OPTARG"
+	  		;;
+	  ?)	usage
+	                unlock_exit 2 $lock $locked
+			;;
   esac
 done
 
 vpccidr=$(getVPCcidr)
+
+#Filter for correct commands
 
 if [ "$Cflag$Dflag$dflag" != "11" ]
 then
@@ -279,16 +294,22 @@ then
     unlock_exit 2 $lock $locked
 fi
 
-
-if [ "$Cflag" == "1" ]
-then  
-  create_guest_network 
-fi
-
-
-if [ "$Dflag" == "1" ]
+#TODO Need to add filter for redundant router backup IP, etc.
+if [ "$Rflag == "1" ]
 then
-  destroy_guest_network
+# TODO add redundant router code for create/destroy
+else
+	
+	if [ "$Cflag" == "1" ]
+	then  
+	  create_guest_network 
+	fi
+	
+	
+	if [ "$Dflag" == "1" ]
+	then
+	  destroy_guest_network
+	fi
 fi
 
 unlock_exit 0 $lock $locked
