@@ -129,6 +129,42 @@ desetup_passwdsvcs() {
   fi 
 }
 
+# TODO add redundant router code for create/destroy
+# need to check if redundant router already exists for current
+#network
+create_redundant_guest_network() {
+	echo -t cloud "Creating Redundant Guest Network"
+#Check if this guest network already exists.
+#If it does then
+#	create a redundant router
+#	Configure Keepalived
+#	Configure Conntrackd
+#	Start router
+#	Start Keepalived
+#	Start Conntrackd
+#else
+#	Create a new guest network
+#	create a redundant router
+#	Configure Keepalived
+#	Configure Conntrackd
+#	Start router
+#	Start Keepalived
+#	Start Conntrackd
+#fi
+}
+
+destroy_redundant_guest_network() {
+	echo -t cloud "Destroying Redundant Guest Network"
+#Check if guest network exists and is redundant
+#If yes then
+#	set up network parameters for destroy
+#else
+
+#fi
+
+}
+
+
 create_guest_network() {
   # need to wait for eth device to appear before configuring it
   timer=0
@@ -232,6 +268,8 @@ Rflag=
 
 op=""
 
+#added r = redundant router ip, p = redundant router device name,
+# -R redundant router needed flag.
 
 while getopts 'CDRn:m:d:i:g:s:e:r:p:' OPTION
 do
@@ -282,6 +320,7 @@ vpccidr=$(getVPCcidr)
 
 #Filter for correct commands
 
+
 if [ "$Cflag$Dflag$dflag" != "11" ]
 then
     usage
@@ -293,11 +332,22 @@ then
     usage
     unlock_exit 2 $lock $locked
 fi
-
+#Need filters for correct combinations for router/redundant router
+#commands in addition to what is here.
 #TODO Need to add filter for redundant router backup IP, etc.
 if [ "$Rflag == "1" ]
 then
-# TODO add redundant router code for create/destroy
+
+	if [ "$Cflag" == "1" ]
+	then  
+	create_redundant_guest_network 
+	fi
+	
+	
+	if [ "$Dflag" == "1" ]
+	then
+	destroy_redundant_guest_network
+	fi
 else
 	
 	if [ "$Cflag" == "1" ]
