@@ -7934,6 +7934,7 @@ public abstract class CitrixResourceBase implements ServerResource, HypervisorRe
     private SetupGuestNetworkAnswer execute(SetupGuestNetworkCommand cmd) {
         Connection conn = getConnection();
         NicTO nic = cmd.getNic();
+        boolean isRedundant = cmd.isRedundant();
         String domrIP = cmd.getAccessDetail(NetworkElementCommand.ROUTER_IP);
         String domrGIP = cmd.getAccessDetail(NetworkElementCommand.ROUTER_GUEST_IP);
         String domrName = cmd.getAccessDetail(NetworkElementCommand.ROUTER_NAME);
@@ -7968,8 +7969,10 @@ public abstract class CitrixResourceBase implements ServerResource, HypervisorRe
                 return new SetupGuestNetworkAnswer(cmd, false, "Can not find vif with mac " + mac + " for VM " + domrName);
             }
 
-            String args = "vpc_guestnw.sh " + domrIP + (cmd.isAdd()?" -C":" -D");
+            String args = "vpc_guestnw.sh " + domrIP + (cmd.isAdd()?" -C":" -D") + (isRedundant?" -R":"");
             String dev = "eth" + domrVif.getDevice(conn);
+            //TODO Design offset for redundant eth device
+            //TODO >>>>>>>Need to add redundant parameters here<<<<<<<<
             args += " -d " + dev;
             args += " -i " + domrGIP;
             args += " -g " + gw;

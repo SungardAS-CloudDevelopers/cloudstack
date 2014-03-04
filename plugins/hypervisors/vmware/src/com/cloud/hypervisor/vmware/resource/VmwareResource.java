@@ -1357,7 +1357,8 @@ public class VmwareResource implements StoragePoolResource, ServerResource, Vmwa
             int ethDeviceNum = findRouterEthDeviceIndex(domrName, routerIp, nic.getMac());
             s_logger.info("find interface index. routerIp: " + routerIp + ", mac: " + nic.getMac() + ", index: " + ethDeviceNum);
 
-            String args =(cmd.isAdd()?"-C":"-D");
+            String args =(cmd.isAdd()?"-C":"-D")+(cmd.isRedundant()?" -R":"");
+            //TODO add eth numbers and other redundant parameters here.
             String dev = "eth" + ethDeviceNum;
             args += " -d " + dev;
             args += " -i " + domrGIP;

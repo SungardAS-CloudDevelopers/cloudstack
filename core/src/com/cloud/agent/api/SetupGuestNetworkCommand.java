@@ -48,6 +48,10 @@ public class SetupGuestNetworkCommand extends NetworkElementCommand{
     public boolean isAdd() {
        return add;
     }
+    
+    public boolean isRedundant() {
+    	return isRedundant;
+    }
 
     @Override
     public boolean executeInSequence() {

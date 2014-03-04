@@ -134,35 +134,33 @@ desetup_passwdsvcs() {
 #network
 create_redundant_guest_network() {
 	echo -t cloud "Creating Redundant Guest Network"
+	
 #Check if this guest network already exists.
 #If it does then
-#	create a redundant router
-#	Configure Keepalived
-#	Configure Conntrackd
-#	Start router
-#	Start Keepalived
-#	Start Conntrackd
+#	Check if redundant router already exists on this network
+#	If no redundant router
+#		Stop existing router for this guest network
+#		Create a redundant router for this guest network
+#		Configure Keepalived
+#		Configure Conntrackd
+#		Reconfigure existing (master) router (???)
+#		Start existing (master) Router
+#		Start backup Router
+#		Start Keepalived
+#		Start Conntrackd
+#	fi
 #else
 #	Create a new guest network
-#	create a redundant router
+#	Create a redundant router for new guest network
 #	Configure Keepalived
 #	Configure Conntrackd
-#	Start router
+#	Start master router
+#	Start backup router
 #	Start Keepalived
 #	Start Conntrackd
 #fi
 }
 
-destroy_redundant_guest_network() {
-	echo -t cloud "Destroying Redundant Guest Network"
-#Check if guest network exists and is redundant
-#If yes then
-#	set up network parameters for destroy
-#else
-
-#fi
-
-}
 
 
 create_guest_network() {
@@ -230,9 +228,9 @@ enable_rpsrfs() {
     #enable rps
     echo $hex > /sys/class/net/$dev/queues/rx-0/rps_cpus
 
-    #enble rfs
+    #enble rfs Recieved Flow Steering
     rps_flow_entries=$(cat /proc/sys/net/core/rps_sock_flow_entries)
-
+	# enable rps Recieved Packet Steering
     if [ $rps_flow_entries -eq 0 ]
     then
         echo 256 > /proc/sys/net/core/rps_sock_flow_entries
@@ -242,8 +240,19 @@ enable_rpsrfs() {
 
 }
 
+destroy_redundant_guest_network() {
+	echo -t cloud "Destroying Redundant Guest Network"
+#Check if guest network exists and is redundant
+#If yes then
+#	set up network parameters for destroy
+#else
+
+#fi
+
+}
+
 destroy_guest_network() {
-  logger -t cloud " $(basename $0): Create network on interface $dev,  gateway $gw, network $ip/$mask "
+  logger -t cloud " $(basename $0): Destroy network on interface $dev,  gateway $gw, network $ip/$mask "
 
   sudo ip addr del dev $dev $ip/$mask
   sudo iptables -t mangle -D PREROUTING -i $dev -m state --state ESTABLISHED,RELATED -j CONNMARK --restore-mark
@@ -258,7 +267,7 @@ destroy_guest_network() {
 iflag=0
 mflag=0
 nflag=0
-reduniflag=0
+redunipflag=0
 redundevflag=0
 dflag=
 gflag=
@@ -284,28 +293,28 @@ do
 			op="-R"
 			;;		
 	  n)	nflag=1
-			subnet="$OPTARG"
+			in_subnet="$OPTARG"
 			;;
 	  m)	mflag=1
-			mask="$OPTARG"
+			in_mask="$OPTARG"
 			;;
 	  d)	dflag=1
-	  		dev="$OPTARG"
+	  		in_dev="$OPTARG"
 	  		;;
 	p)		redundevflag=1
-	  		redundev="$OPTARG"
+	  		in_redundev="$OPTARG"
 	  		;;
 	  i)	iflag=1
-			ip="$OPTARG"
+			in_ip="$OPTARG"
 	  		;;
-	r)	reduniflag=1
-			redunip="$OPTARG"
+	r)      redunipflag=1
+			in_redunip="$OPTARG"
 	  		;;
 	  g)	gflag=1
-	  		gw="$OPTARG"
+	  		in_gw="$OPTARG"
 	                ;;
 	  s)    sflag=1
-	                DNS="$OPTARG"
+	        DNS="$OPTARG"
 	                ;;
 	  e)    eflag=1
 			DOMAIN="$OPTARG"
@@ -332,29 +341,42 @@ then
     usage
     unlock_exit 2 $lock $locked
 fi
+if [ "$Rflag" == "1" ] && [ "$redunipflag$redundevflag$iflag$gflag$mflag" != "11111" ]
+then
+    usage
+    unlock_exit 2 $lock $locked
+fi
+
 #Need filters for correct combinations for router/redundant router
 #commands in addition to what is here.
 #TODO Need to add filter for redundant router backup IP, etc.
 if [ "$Rflag == "1" ]
 then
-
+	backup_ip = $in_redunip
+	ip = $in_ip
+	mask = $in_mask
+	gw = $in_gw
+	backup_dev = $in_redundev
+	dev = $in_dev
+	
 	if [ "$Cflag" == "1" ]
 	then  
 	create_redundant_guest_network 
-	fi
-	
+	fi	
 	
 	if [ "$Dflag" == "1" ]
 	then
 	destroy_redundant_guest_network
 	fi
 else
-	
+	ip = $in_ip
+	mask = $in_mask
+	gw = $in_gw
+	dev = $in_dev
 	if [ "$Cflag" == "1" ]
 	then  
 	  create_guest_network 
 	fi
-	
 	
 	if [ "$Dflag" == "1" ]
 	then
