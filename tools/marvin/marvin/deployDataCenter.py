@@ -564,7 +564,7 @@ if __name__ == "__main__":
                       ./datacenterCfg")
 
     (options, args) = parser.parse_args()
-    from marvin.marvinLog import MarvinLog
+    from marvinLog import MarvinLog
     cfg = configGenerator.getSetupConfig(options.input)
     log_obj = MarvinLog("CSLog")
     tcRunLogger = log_obj.setLogHandler("/tmp/debug.log")
