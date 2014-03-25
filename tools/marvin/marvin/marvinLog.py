@@ -20,8 +20,8 @@
 import logging
 import sys
 import time
-from codes import (NO,
-                   YES
+from marvin.codes import (NO,
+                          YES
                           )
 
 
