@@ -276,7 +276,23 @@ Dflag=
 Rflag=
 
 op=""
-
+#vpc_guestnw.sh interface
+#Flags
+#-C Create guest network
+#-D Destroy guest network
+#-R Redundant router required
+#Parameters $OPTARG will contain current value of parameter
+#An associated flag will be set if parameter value is detected
+#No tests for validity are performed on parameter values
+#-n ip subnet
+#-m network mask
+#-d device name
+#-i ip address
+#-g gateway address
+#-s DNS Server
+#-e Domain Name
+#-r Redundant Router ip address
+#-p Redundant Router Device name
 #added r = redundant router ip, p = redundant router device name,
 # -R redundant router needed flag.
 
@@ -330,6 +346,7 @@ vpccidr=$(getVPCcidr)
 #Filter for correct commands
 
 
+#
 if [ "$Cflag$Dflag$dflag" != "11" ]
 then
     usage
