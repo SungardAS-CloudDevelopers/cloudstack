@@ -136,7 +136,7 @@ import com.cloud.vm.dao.DomainRouterDao;
 
 
 @Local(value = { VpcManager.class, VpcService.class, VpcProvisioningService.class })
-public class VpcManagerImpl extends ManagerBase implements VpcManager, VpcProvisioningService, VpcService {
+public class VpcManagerImpl extends ManagerBase implements VpcManager, VpcProvisioningService, VpcService,VpcRedundantService {
     private static final Logger s_logger = Logger.getLogger(VpcManagerImpl.class);
     @Inject
     EntityManager _entityMgr;

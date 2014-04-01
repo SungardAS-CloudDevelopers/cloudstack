@@ -1907,7 +1907,7 @@ ServerResource {
 
     private SetupGuestNetworkAnswer execute(SetupGuestNetworkCommand cmd) {
         //this command assumes a NIC/MAC pair already exist
-        //We need to find out where they are created!!
+        //TODO We need to find out where they are created!!
         Connect conn;
         NicTO nic = cmd.getNic();
         String routerIP = cmd.getAccessDetail(NetworkElementCommand.ROUTER_IP);
