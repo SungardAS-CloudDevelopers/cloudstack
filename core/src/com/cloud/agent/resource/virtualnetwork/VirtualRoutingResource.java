@@ -829,7 +829,14 @@ public class VirtualRoutingResource implements Manager {
         }
         return  routerProxy("monitor_service.sh", routerIP, args);
     }
-
+    //TODO Flesh out this stub for redundant call to vpc_guestnw.sh
+    public String assignGuestNetwork(final String dev, final String routerIP,
+            final String routerGIP, final String gateway, final String cidr,
+            final String netmask, final String dns, final String domainName, final boolean isRedundant) {
+    return "";
+    }
+    
+    
     public String assignGuestNetwork(final String dev, final String routerIP,
             final String routerGIP, final String gateway, final String cidr,
             final String netmask, final String dns, final String domainName) {

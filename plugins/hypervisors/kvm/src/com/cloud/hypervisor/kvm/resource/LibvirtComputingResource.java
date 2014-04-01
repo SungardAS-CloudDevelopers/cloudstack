@@ -1906,6 +1906,8 @@ ServerResource {
     }
 
     private SetupGuestNetworkAnswer execute(SetupGuestNetworkCommand cmd) {
+        //this command assumes a NIC/MAC pair already exist
+        //We need to find out where they are created!!
         Connect conn;
         NicTO nic = cmd.getNic();
         String routerIP = cmd.getAccessDetail(NetworkElementCommand.ROUTER_IP);
@@ -1915,6 +1917,13 @@ ServerResource {
         String cidr = Long.toString(NetUtils.getCidrSize(nic.getNetmask()));
         String domainName = cmd.getNetworkDomain();
         String dns = cmd.getDefaultDns1();
+        boolean redundant = cmd.isRedundant();
+        //if the guest network is redundant then we need to populate the parameters for the
+        //backup router.
+        //From where??
+        if (redundant) {
+            //populate the backup router parameters
+        }
 
         if (dns == null || dns.isEmpty()) {
             dns = cmd.getDefaultDns2();
@@ -1936,7 +1945,8 @@ ServerResource {
                     break;
                 }
             }
-
+            //if we don't find MAC address for the nic passed into this command tell everyone and 
+            //bail out.
             if ( routerNic == null ) {
                 return new SetupGuestNetworkAnswer(cmd, false, "Can not find nic with mac " + nic.getMac() + " for VM " + routerName);
             }
