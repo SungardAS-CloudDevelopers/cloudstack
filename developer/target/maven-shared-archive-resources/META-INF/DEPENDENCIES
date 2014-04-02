@@ -1,0 +1,251 @@
+// ------------------------------------------------------------------
+// Transitive dependencies of this project determined from the
+// maven pom organized by organization.
+// ------------------------------------------------------------------
+
+Apache CloudStack Developer Mode
+
+
+From: 'an unknown organization'
+  - AOP alliance (http://aopalliance.sourceforge.net) aopalliance:aopalliance:jar:1.0
+    License: Public Domain 
+  - Code Generation Library (http://cglib.sourceforge.net/) cglib:cglib-nodep:jar:2.2.2
+    License: ASF 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - AWS SDK for Java (http://aws.amazon.com/sdkforjava) com.amazonaws:aws-java-sdk:jar:1.3.22
+    License: Apache License, Version 2.0  (http://aws.amazon.com/apache2.0)
+  - Guava: Google Core Libraries for Java (http://code.google.com/p/guava-libraries/guava) com.google.guava:guava:jar:14.0-rc1
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Java IPv6 Library (http://code.google.com/p/java-ipv6) com.googlecode.java-ipv6:java-ipv6:jar:0.10
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Trilead SSH2 (http://www.trilead.com/Products/Trilead_SSH_for_Java/) com.trilead:trilead-ssh2:jar:build213-svnkit-1.3-patch
+    License: $license.name  (http://www.trilead.com/Products/Trilead_SSH_for_Java/License/)
+  - commons-beanutils-core  commons-beanutils:commons-beanutils-core:jar:1.7.0
+
+  - Javassist (http://www.javassist.org/) javassist:javassist:jar:3.12.1.GA
+    License: MPL 1.1  (http://www.mozilla.org/MPL/MPL-1.1.html)    License: LGPL 2.1  (http://www.gnu.org/licenses/lgpl-2.1.html)
+  - JavaBeans Activation Framework (JAF) (http://java.sun.com/products/javabeans/jaf/index.jsp) javax.activation:activation:jar:1.1
+    License: Common Development and Distribution License (CDDL) v1.0  (https://glassfish.dev.java.net/public/CDDLv1.0.html)
+  - ejb-api  javax.ejb:ejb-api:jar:3.0
+
+  - javax.inject (http://code.google.com/p/atinject/) javax.inject:javax.inject:jar:1
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - JavaMail API (https://glassfish.dev.java.net/javaee5/mail/) javax.mail:mail:jar:1.4
+    License: Common Development and Distribution License (CDDL) v1.0  (https://glassfish.dev.java.net/public/CDDLv1.0.html)
+  - jdom  jdom:jdom:jar:1.0
+
+  - jstl  jstl:jstl:jar:1.2
+
+  - MySQL java connector (http://dev.mysql.com/usingmysql/java/) mysql:mysql-connector-java:jar:5.1.21
+    License: The GNU General Public License, Version 2  (http://www.gnu.org/licenses/gpl.txt)
+  - Neko HTML (http://nekohtml.sourceforge.net/) net.sourceforge.nekohtml:nekohtml:jar:1.9.12
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - AspectJ weaver (http://www.aspectj.org) org.aspectj:aspectjweaver:jar:1.7.0
+    License: Eclipse Public License - v 1.0  (http://www.eclipse.org/legal/epl-v10.html)
+  - Bouncy Castle Provider (http://www.bouncycastle.org/java.html) org.bouncycastle:bcprov-jdk16:jar:1.46
+    License: Bouncy Castle Licence  (http://www.bouncycastle.org/licence.html)
+  - Javax Persistence API 2.0 (http://www.eclipse.org/eclipselink) org.eclipse.persistence:javax.persistence:jar:2.0.0
+    License: Eclipse Public License - v 1.0  (http://www.eclipse.org/legal/epl-v10.html)
+  - Reflections (http://code.google.com/p/reflections/) org.reflections:reflections:jar:0.9.8
+    License: WTFPL  (http://en.wikipedia.org/wiki/WTFPL)
+  - wsdl4j  wsdl4j:wsdl4j:jar:1.4
+
+  - xalan  xalan:xalan:jar:2.7.0
+
+  - xercesImpl  xerces:xercesImpl:jar:2.6.2
+
+  - xom (http://www.xom.nu) xom:xom:jar:1.1
+
+
+From: 'Apache Software Foundation' (http://jakarta.apache.org/)
+  - HttpClient (http://jakarta.apache.org/httpcomponents/httpclient-3.x/) commons-httpclient:commons-httpclient:jar:3.1
+    License: Apache License  (http://www.apache.org/licenses/LICENSE-2.0)
+
+From: 'Apache Software Foundation' (http://www.apache.org)
+  - Apache Log4j (http://logging.apache.org/log4j/1.2/) log4j:log4j:bundle:1.2.16
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'Apache Software Foundation' (http://www.apache.org/)
+  - FileUpload (http://jakarta.apache.org/commons/fileupload/) commons-fileupload:commons-fileupload:jar:1.2
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Batik CSS engine (http://xmlgraphics.apache.org/batik/) org.apache.xmlgraphics:batik-css:jar:1.7
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Batik external code (http://xmlgraphics.apache.org/batik/) org.apache.xmlgraphics:batik-ext:jar:1.7
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Batik utility library (http://xmlgraphics.apache.org/batik/) org.apache.xmlgraphics:batik-util:jar:1.7
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'Codehaus' (http://www.codehaus.org)
+  - jaxen (http://jaxen.codehaus.org/) jaxen:jaxen:jar:1.1-beta-8
+
+
+From: 'Codehaus' (http://www.codehaus.org/)
+  - Stax2 API (http://woodstox.codehaus.org/StAX2) org.codehaus.woodstox:stax2-api:jar:3.1.1
+    License: The BSD License  (http://www.opensource.org/licenses/bsd-license.php)
+  - Woodstox (http://woodstox.codehaus.org) org.codehaus.woodstox:woodstox-core-asl:jar:4.1.4
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'Extreme! Lab, Indiana University' (http://www.extreme.indiana.edu/)
+  - MXP1: Xml Pull Parser 3rd Edition (XPP3) (http://www.extreme.indiana.edu/xgws/xsoap/xpp/mxp1/) xpp3:xpp3_min:jar:1.1.4c
+    License: Indiana University Extreme! Lab Software License, vesion 1.1.1  (http://www.extreme.indiana.edu/viewcvs/~checkout~/XPP3/java/LICENSE.txt)    License: Public Domain  (http://creativecommons.org/licenses/publicdomain)
+
+From: 'FasterXML' (http://fasterxml.com)
+  - Jackson (http://jackson.codehaus.org) org.codehaus.jackson:jackson-core-asl:jar:1.8.9
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Data Mapper for Jackson (http://jackson.codehaus.org) org.codehaus.jackson:jackson-mapper-asl:jar:1.8.9
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'FasterXML' (http://fasterxml.com/)
+  - Jackson-annotations (http://wiki.fasterxml.com/JacksonHome) com.fasterxml.jackson.core:jackson-annotations:jar:2.1.1
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Jackson-core (http://wiki.fasterxml.com/JacksonHome) com.fasterxml.jackson.core:jackson-core:jar:2.1.1
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - jackson-databind (http://wiki.fasterxml.com/JacksonHome) com.fasterxml.jackson.core:jackson-databind:jar:2.1.1
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Jackson-JAXRS-JSON_Provider (http://wiki.fasterxml.com/JacksonHome) com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:jar:2.1.1
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Jackson-module-JAXB-annotations (http://wiki.fasterxml.com/JacksonJAXBAnnotations) com.fasterxml.jackson.module:jackson-module-jaxb-annotations:jar:2.1.1
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'Google, Inc.' (http://www.google.com)
+  - Gson (http://code.google.com/p/google-gson/) com.google.code.gson:gson:jar:1.7.2
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'http://www.beanshell.org/'
+  - BeanShell core  org.beanshell:bsh-core:jar:2.0b4
+    License: GNU LESSER GENERAL PUBLIC LICENSE  (http://www.gnu.org/licenses/lgpl.txt)
+
+From: 'jcraft' (http://www.jcraft.com/jsch)
+  - JSch (http://www.jcraft.com/jsch/) com.jcraft:jsch:jar:0.1.42
+    License: BSD  (http://www.jcraft.com/jsch/LICENSE.txt)
+
+From: 'MetaStuff Ltd.' (http://sourceforge.net/projects/dom4j)
+  - dom4j (http://dom4j.org) dom4j:dom4j:jar:1.6.1
+
+
+From: 'Mort Bay Consulting' (http://www.mortbay.com)
+  - Jetty :: Continuation (http://www.eclipse.org/jetty/jetty-continuation) org.eclipse.jetty:jetty-continuation:jar:8.1.7.v20120910
+    License: Apache Software License - Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0)    License: Eclipse Public License - Version 1.0  (http://www.eclipse.org/org/documents/epl-v10.php)
+  - Jetty :: Http Utility (http://www.eclipse.org/jetty/jetty-http) org.eclipse.jetty:jetty-http:jar:8.1.7.v20120910
+    License: Apache Software License - Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0)    License: Eclipse Public License - Version 1.0  (http://www.eclipse.org/org/documents/epl-v10.php)
+  - Jetty :: IO Utility (http://www.eclipse.org/jetty/jetty-io) org.eclipse.jetty:jetty-io:jar:8.1.7.v20120910
+    License: Apache Software License - Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0)    License: Eclipse Public License - Version 1.0  (http://www.eclipse.org/org/documents/epl-v10.php)
+  - Jetty :: Security (http://www.eclipse.org/jetty/jetty-security) org.eclipse.jetty:jetty-security:jar:8.1.7.v20120910
+    License: Apache Software License - Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0)    License: Eclipse Public License - Version 1.0  (http://www.eclipse.org/org/documents/epl-v10.php)
+  - Jetty :: Utilities (http://www.eclipse.org/jetty/jetty-util) org.eclipse.jetty:jetty-util:jar:8.1.7.v20120910
+    License: Apache Software License - Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0)    License: Eclipse Public License - Version 1.0  (http://www.eclipse.org/org/documents/epl-v10.php)
+
+From: 'Oracle Corporation' (http://www.oracle.com/)
+  - javax.ws.rs-api (http://jax-rs-spec.java.net) javax.ws.rs:javax.ws.rs-api:jar:2.0-m10
+    License: CDDL 1.1  (http://glassfish.java.net/public/CDDL+GPL_1_1.html)    License: GPL2 w/ CPE  (http://glassfish.java.net/public/CDDL+GPL_1_1.html)
+
+From: 'QOS.ch' (http://www.qos.ch)
+  - SLF4J API Module (http://www.slf4j.org) org.slf4j:slf4j-api:jar:1.7.5
+    License: MIT License  (http://www.opensource.org/licenses/mit-license.php)
+  - SLF4J LOG4J-12 Binding (http://www.slf4j.org) org.slf4j:slf4j-log4j12:jar:1.7.5
+    License: MIT License  (http://www.opensource.org/licenses/mit-license.php)
+
+From: 'SpringSource' (http://springsource.org/spring-framework)
+  - Spring AOP (https://github.com/SpringSource/spring-framework) org.springframework:spring-aop:jar:3.2.4.RELEASE
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Spring Beans (https://github.com/SpringSource/spring-framework) org.springframework:spring-beans:jar:3.2.4.RELEASE
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Spring Context (https://github.com/SpringSource/spring-framework) org.springframework:spring-context:jar:3.2.4.RELEASE
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Spring Core (https://github.com/SpringSource/spring-framework) org.springframework:spring-core:jar:3.2.4.RELEASE
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Spring Expression Language (SpEL) (https://github.com/SpringSource/spring-framework) org.springframework:spring-expression:jar:3.2.4.RELEASE
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Spring Web (https://github.com/SpringSource/spring-framework) org.springframework:spring-web:jar:3.2.4.RELEASE
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'Terracotta, Inc.' (http://www.terracotta.org)
+  - Ehcache Core (http://ehcache.org) net.sf.ehcache:ehcache-core:jar:2.6.6
+    License: The Apache Software License, Version 2.0  (src/assemble/EHCACHE-CORE-LICENSE.txt)
+
+From: 'The Apache Software Foundation' (http://jakarta.apache.org)
+  - Collections (http://jakarta.apache.org/commons/collections/) commons-collections:commons-collections:jar:3.2
+    License: The Apache Software License, Version 2.0  (/LICENSE.txt)
+
+From: 'The Apache Software Foundation' (http://www.apache.org)
+  - Apache Extras Companion™ for Apache log4j™. (http://logging.apache.org:80/log4j/companions/extras) log4j:apache-log4j-extras:bundle:1.1
+    License: Apache License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - JavaMail 1.4 (http://geronimo.apache.org/maven/specs/geronimo-javamail_1.4_spec/1.7.1) org.apache.geronimo.specs:geronimo-javamail_1.4_spec:bundle:1.7.1
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Servlet 3.0 (http://geronimo.apache.org/maven/specs/geronimo-servlet_3.0_spec/1.0) org.apache.geronimo.specs:geronimo-servlet_3.0_spec:bundle:1.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'The Apache Software Foundation' (http://www.apache.org/)
+  - Commons Codec (http://commons.apache.org/codec/) commons-codec:commons-codec:jar:1.6
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Commons Configuration (http://commons.apache.org/configuration/) commons-configuration:commons-configuration:jar:1.8
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Commons DBCP (http://commons.apache.org/dbcp/) commons-dbcp:commons-dbcp:jar:1.4
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Commons IO (http://commons.apache.org/io/) commons-io:commons-io:jar:1.4
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Commons Lang (http://commons.apache.org/lang/) commons-lang:commons-lang:jar:2.6
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Commons Logging (http://commons.apache.org/logging) commons-logging:commons-logging:jar:1.1.1
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Commons Net (http://commons.apache.org/proper/commons-net/) commons-net:commons-net:jar:3.3
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Commons Pool (http://commons.apache.org/pool/) commons-pool:commons-pool:jar:1.6
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache CloudStack API (http://www.cloudstack.org/cloud-api) org.apache.cloudstack:cloud-api:jar:4.3.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache CloudStack Core (http://www.cloudstack.org/cloud-core) org.apache.cloudstack:cloud-core:jar:4.3.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache CloudStack Cloud Engine API (http://www.cloudstack.org/cloud-engine/cloud-engine-api) org.apache.cloudstack:cloud-engine-api:jar:4.3.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache CloudStack Cloud Engine Internal Components API (http://www.cloudstack.org/cloud-engine/cloud-engine-components-api) org.apache.cloudstack:cloud-engine-components-api:jar:4.3.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache CloudStack Cloud Engine Schema Component (http://www.cloudstack.org/cloud-engine/cloud-engine-schema) org.apache.cloudstack:cloud-engine-schema:jar:4.3.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache CloudStack Framework - Clustering (http://www.cloudstack.org/cloudstack-framework/cloud-framework-cluster) org.apache.cloudstack:cloud-framework-cluster:jar:4.3.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache CloudStack Framework - Configuration (http://www.cloudstack.org/cloudstack-framework/cloud-framework-config) org.apache.cloudstack:cloud-framework-config:jar:4.3.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache CloudStack Framework - Event Notification (http://www.cloudstack.org/cloudstack-framework/cloud-framework-db) org.apache.cloudstack:cloud-framework-db:jar:4.3.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache CloudStack Framework - Event Notification (http://www.cloudstack.org/cloudstack-framework/cloud-framework-events) org.apache.cloudstack:cloud-framework-events:jar:4.3.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache CloudStack Framework - IPC (http://www.cloudstack.org/cloudstack-framework/cloud-framework-ipc) org.apache.cloudstack:cloud-framework-ipc:jar:4.3.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache CloudStack Framework - Jobs (http://www.cloudstack.org/cloudstack-framework/cloud-framework-jobs) org.apache.cloudstack:cloud-framework-jobs:jar:4.3.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache CloudStack Framework - Managed Context (http://www.cloudstack.org/cloud-maven-standard/cloud-framework-managed-context) org.apache.cloudstack:cloud-framework-managed-context:jar:4.3.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache CloudStack Framework - REST (http://www.cloudstack.org/cloudstack-framework/cloud-framework-rest) org.apache.cloudstack:cloud-framework-rest:jar:4.3.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache CloudStack Server (http://www.cloudstack.org/cloud-server) org.apache.cloudstack:cloud-server:jar:4.3.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache CloudStack Utils (http://www.cloudstack.org/cloud-utils) org.apache.cloudstack:cloud-utils:jar:4.3.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - Apache CXF JAX-RS Bundle Jar (http://cxf.apache.org) org.apache.cxf:cxf-bundle-jaxrs:bundle:2.7.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+  - HttpClient (http://hc.apache.org/httpcomponents-client) org.apache.httpcomponents:httpclient:jar:4.2.1
+    License: Apache License  (LICENSE.txt)
+  - HttpCore (http://hc.apache.org/httpcomponents-core-ga) org.apache.httpcomponents:httpcore:jar:4.2.1
+    License: Apache License  (LICENSE.txt)
+  - XmlSchema Core (http://ws.apache.org/commons/xmlschema20/xmlschema-core/) org.apache.ws.xmlschema:xmlschema-core:bundle:2.0.3
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'The JASYPT team' (http://www.jasypt.org)
+  - JASYPT: Java Simplified Encryption (http://www.jasypt.org) org.jasypt:jasypt:jar:1.9.0
+    License: The Apache Software License, Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0.txt)
+
+From: 'The Open Web Application Security Project (OWASP)' (http://www.owasp.org/)
+  - OWASP AntiSamy (http://www.owasp.org/index.php/Category:OWASP_AntiSamy_Project/antisamy) org.owasp.antisamy:antisamy:jar:1.4.3
+    License: BSD License  (http://www.opensource.org/licenses/bsd-license.php)
+
+From: 'The Open Web Application Security Project (OWASP)' (http://www.owasp.org/index.php)
+  - ESAPI (http://www.esapi.org/) org.owasp.esapi:esapi:jar:2.0.1
+    License: BSD  (http://www.opensource.org/licenses/bsd-license.php)    License: Creative Commons 3.0 BY-SA  (http://creativecommons.org/licenses/by-sa/3.0/)
+
+From: 'XStream' (http://xstream.codehaus.org)
+  - XStream Core  com.thoughtworks.xstream:xstream:jar:1.3.1
+    License: BSD style  (http://xstream.codehaus.com/license.html)
+
+
+
+

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="maven-antrun-" default="main"  >
+<target name="main">
+  <filter token="VERSION" value="4.3.0"/>
+  <copy todir="/Users/karl.harris/Development/cloudstackworkingspace/developer/target/db" filtering="true">
+    <fileset dir="/Users/karl.harris/Development/cloudstackworkingspace/developer/../setup/db/"/>
+  </copy>
+  <copy todir="/Users/karl.harris/Development/cloudstackworkingspace/developer/target/db" filtering="true">
+    <fileset dir="/Users/karl.harris/Development/cloudstackworkingspace/developer/../awsapi-setup/db/mysql/">
+      <include name="**/*.sql"/>
+    </fileset>
+  </copy>
+</target>
+</project>
