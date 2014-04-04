@@ -52,6 +52,11 @@ public interface VpcOffering extends InternalIdentity, Identity {
      * @return true if offering is default - came with the cloudStack fresh install; false otherwise
      */
     boolean isDefault();
+    /**
+     * 
+     * @return true if offering has redundant routing - false otherwise
+     */
+    boolean isRedundant();
 
     /**
      * @return service offering id used by VPC virutal router

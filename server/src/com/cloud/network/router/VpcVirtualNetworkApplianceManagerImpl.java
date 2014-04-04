@@ -190,12 +190,12 @@ public class VpcVirtualNetworkApplianceManagerImpl extends VirtualNetworkApplian
             Map<Param, Object> params) throws ConcurrentOperationException,
             InsufficientCapacityException, ResourceUnavailableException {
 
-        s_logger.debug("Deploying Virtual Router in VPC "+ vpc);
+        s_logger.debug("Deploying Virtual Router(s) in VPC "+ vpc);
         Vpc vpcLock = _vpcDao.acquireInLockTable(vpc.getId());
         if (vpcLock == null) {
             throw new ConcurrentOperationException("Unable to lock vpc " + vpc.getId());
         }
-        
+
         //1) Get deployment plan and find out the list of routers
         Pair<DeploymentPlan, List<DomainRouterVO>> planAndRouters = getDeploymentPlanAndRouters(vpc.getId(), dest);
         DeploymentPlan plan = planAndRouters.first();
@@ -205,36 +205,53 @@ public class VpcVirtualNetworkApplianceManagerImpl extends VirtualNetworkApplian
             if (routers.size() >= 1) {
                 return routers;
             }
-            
+            //TODO this is where we will deploy redundant routers if VO says we should.
+
             Long offeringId = _vpcOffDao.findById(vpc.getVpcOfferingId()).getServiceOfferingId();
             if (offeringId == null) {
                 offeringId = _offering.getId();
             }
             //3) Deploy Virtual Router
             List<? extends PhysicalNetwork> pNtwks = _pNtwkDao.listByZone(vpc.getZoneId());
-            
+
             VirtualRouterProvider vpcVrProvider = null;
-           
+            boolean isRedundant = false;
             for (PhysicalNetwork pNtwk : pNtwks) {
+                //TODO Looking at physical networks to find types VPCVirtualRouter and VPCRedundantVirtual Router
+                //Try non redundate type
                 PhysicalNetworkServiceProvider provider = _physicalProviderDao.findByServiceProvider(pNtwk.getId(),
                         Type.VPCVirtualRouter.toString());
-                if (provider == null) {
-                    throw new CloudRuntimeException("Cannot find service provider " +
-                            Type.VPCVirtualRouter.toString() + " in physical network " + pNtwk.getId());
+                if (provider != null) {
+                   isRedundant = false;
+                } else
+                {
+                    //Try redundant type
+                    provider = _physicalProviderDao.findByServiceProvider(pNtwk.getId(),
+                            Type.VPCRedundantVirtualRouter.toString());
+                    if(provider!=  null){
+                        //TODO set up Redundant VPC network
+                        isRedundant = true;
+                    }
+                    else
+                    {
+                        throw new CloudRuntimeException("Cannot find service provider " +
+                                Type.VPCVirtualRouter.toString() + " in physical network " + pNtwk.getId());
+                    }
+                    
+                    vpcVrProvider = _vrProviderDao.findByNspIdAndType(provider.getId(),Type.VPCVirtualRouter);
+                    //TODO not  sure if we need this break????!!!!
+                    if (vpcVrProvider != null) {
+                        break;
+                    }
                 }
-                vpcVrProvider = _vrProviderDao.findByNspIdAndType(provider.getId(),
-                        Type.VPCVirtualRouter);
-                if (vpcVrProvider != null) {
-                    break;
-                }
-            }
-            
+                //TODO This is where I ended on 4/4/2014 need to find non VPC redundant routing for comparison
+                
             PublicIp sourceNatIp = _vpcMgr.assignSourceNatIpAddressToVpc(owner, vpc);
-            
-            DomainRouterVO router = deployVpcRouter(owner, dest, plan, params, false, vpcVrProvider, offeringId,
+            DomainRouterVO router = deployVpcRouter(owner, dest, plan, params, isRedundant, vpcVrProvider, offeringId,
                     vpc.getId(), sourceNatIp);
             routers.add(router);
-            
+            isRedundant = false;
+            }
         } finally {
             if (vpcLock != null) {
                 _vpcDao.releaseFromLockTable(vpc.getId());

@@ -24,6 +24,7 @@ public interface VirtualRouterProvider extends InternalIdentity, Identity {
         VirtualRouter,
         ElasticLoadBalancerVm,
         VPCVirtualRouter,
+        VPCRedundantVirtualRouter,
         InternalLbVm
     }
 

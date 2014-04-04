@@ -49,6 +49,7 @@ import com.cloud.network.dao.IPAddressDao;
 import com.cloud.network.dao.NetworkDao;
 import com.cloud.network.dao.Site2SiteVpnGatewayDao;
 import com.cloud.network.router.VirtualRouter;
+import com.cloud.network.router.VirtualRouter.RedundantState;
 import com.cloud.network.router.VirtualRouter.Role;
 import com.cloud.network.router.VpcVirtualNetworkApplianceManager;
 import com.cloud.network.vpc.NetworkACLItem;
@@ -178,26 +179,37 @@ public class VpcVirtualRouterElement extends VirtualRouterElement implements Vpc
             throw new ResourceUnavailableException("Can't find at least one running router!",
                     DataCenter.class, network.getDataCenterId());
         }
-
-        if (routers.size() > 1) {
-            throw new CloudRuntimeException("Found more than one router in vpc " + vpc);
-        }
-
-        DomainRouterVO router = routers.get(0);
-        //Add router to guest network if needed
-        if (!_networkMgr.isVmPartOfNetwork(router.getId(), network.getId())) {
-        	Map<VirtualMachineProfile.Param, Object> paramsForRouter = new HashMap<VirtualMachineProfile.Param, Object>(1);
-        	if (network.getState() == State.Setup) {
-        		paramsForRouter.put(VirtualMachineProfile.Param.ReProgramGuestNetworks, true);
-        	}
-            if (!_vpcRouterMgr.addVpcRouterToGuestNetwork(router, network, false, paramsForRouter)) {
-                throw new CloudRuntimeException("Failed to add VPC router " + router + " to guest network " + network);
-            } else {
-                s_logger.debug("Successfully added VPC router " + router + " to guest network " + network);
+        //TODO need to verify this check is correct for redundant routing
+        if (routers.size() > 1 ) {
+            if (routers.size() == 2){
+                for (DomainRouterVO routerX: routers){
+                    if (routerX.getIsRedundantRouter()){
+                        if(routerX.getRedundantState() != RedundantState.MASTER || routerX.getRedundantState() != RedundantState.BACKUP ){
+                            throw new CloudRuntimeException(vpc + ":Router in "+ routerX.getRedundantState().toString()+" state, found in vpc with redundant routing set. Should only be Master or Backup");
+                        }
+                    } else {
+                        throw new CloudRuntimeException("Found more than one router in a non-redundant routed vpc " + vpc);
+                    }
+                }
+            }else {
+                throw new CloudRuntimeException("Too many routers, found "+ routers.size());
             }
         }
-
-        return true;
+            for (DomainRouterVO routerX: routers){
+            //Add router(s) to guest network if needed
+            if (!_networkMgr.isVmPartOfNetwork(routerX.getId(), network.getId())) {
+                Map<VirtualMachineProfile.Param, Object> paramsForRouter = new HashMap<VirtualMachineProfile.Param, Object>(1);
+                if (network.getState() == State.Setup) {
+                    paramsForRouter.put(VirtualMachineProfile.Param.ReProgramGuestNetworks, true);
+                }
+                if (!_vpcRouterMgr.addVpcRouterToGuestNetwork(routerX, network, false, paramsForRouter)) {
+                    throw new CloudRuntimeException("Failed to add VPC router " + routerX + " to guest network " + network);
+                } else {
+                    s_logger.debug("Successfully added VPC router " + routerX + " to guest network " + network);
+                }
+            }
+        }
+            return true;
     }
 
     @Override
