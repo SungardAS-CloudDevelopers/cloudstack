@@ -1488,7 +1488,7 @@ public class VirtualNetworkApplianceManagerImpl extends ManagerBase implements V
                     long podId = pod.getId();
                     List<DomainRouterVO> virtualRouters = _routerDao.listByPodIdAndStates(podId, VirtualMachine.State.Starting, VirtualMachine.State.Running);
 
-                    assert (virtualRouters.size() <= 1) : "Pod can have utmost one VR in Basic Zone, please check!";
+                    assert (virtualRouters.size() <= 1) : "Pod can have at most one VR in Basic Zone, please check!";
 
                     // Add virtualRouters to the routers, this avoids the situation when
                     // all routers are skipped and VirtualRouterElement throws exception
@@ -1530,7 +1530,7 @@ public class VirtualNetworkApplianceManagerImpl extends ManagerBase implements V
             }
         
             if (routers.size() >= 5) {
-                s_logger.error("Too much redundant routers!");
+                s_logger.error("Too  redundant routers!");
             }
 
             // Check if providers are supported in the physical networks

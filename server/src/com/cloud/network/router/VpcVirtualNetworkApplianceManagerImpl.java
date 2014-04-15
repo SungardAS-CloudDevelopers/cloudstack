@@ -201,69 +201,71 @@ public class VpcVirtualNetworkApplianceManagerImpl extends VirtualNetworkApplian
         DeploymentPlan plan = planAndRouters.first();
         List<DomainRouterVO> routers = planAndRouters.second();
         try {
-            //2) Return routers if exist
+            //2) Return routers if exist 
+            //TODO Probably need a more extensive check for VPC Virtual Redundant Routers than a 
+            //Simple size check. We need to check for changes in the existing configuration
+            //How do I check for changes in the "plan" state aka number and type of routers?
             if (routers.size() >= 1) {
                 return routers;
             }
-            //TODO this is where we will deploy redundant routers if VO says we should.
-
             Long offeringId = _vpcOffDao.findById(vpc.getVpcOfferingId()).getServiceOfferingId();
             if (offeringId == null) {
                 offeringId = _offering.getId();
             }
             //3) Deploy Virtual Router
             List<? extends PhysicalNetwork> pNtwks = _pNtwkDao.listByZone(vpc.getZoneId());
-
             VirtualRouterProvider vpcVrProvider = null;
-            boolean isRedundant = false;
+            DomainRouterVO router = null;
             for (PhysicalNetwork pNtwk : pNtwks) {
-                //TODO Looking at physical networks to find types VPCVirtualRouter and VPCRedundantVirtual Router
-                //Try non redundate type
-                PhysicalNetworkServiceProvider provider = _physicalProviderDao.findByServiceProvider(pNtwk.getId(),
-                        Type.VPCVirtualRouter.toString());
-                if (provider != null) {
-                   isRedundant = false;
-                } else
-                {
-                    //Try redundant type
-                    provider = _physicalProviderDao.findByServiceProvider(pNtwk.getId(),
-                            Type.VPCRedundantVirtualRouter.toString());
-                    if(provider!=  null){
-                        //TODO set up Redundant VPC network
-                        isRedundant = true;
+                //Looking at physical networks to filter for VPCVirtualRouter and VPCRedundantVirtual Router
+                //Try non redundate type first
+                Type rType = Type.VPCVirtualRouter;
+                PhysicalNetworkServiceProvider provider = null;
+                provider= _physicalProviderDao.findByServiceProvider(pNtwk.getId(),rType.toString());
+                if (provider == null) 
+                {   //No standard VPC Virtual Router Service, now check for Virtual Router redundancy
+                    rType = Type.VPCRedundantVirtualRouter;
+                    provider = _physicalProviderDao.findByServiceProvider(pNtwk.getId(),rType.toString());
+                    if (provider == null){
+                        throw new CloudRuntimeException("Cannot find service provider in physical network " + pNtwk.getId());
                     }
-                    else
-                    {
-                        throw new CloudRuntimeException("Cannot find service provider " +
-                                Type.VPCVirtualRouter.toString() + " in physical network " + pNtwk.getId());
-                    }
-                    
-                    vpcVrProvider = _vrProviderDao.findByNspIdAndType(provider.getId(),Type.VPCVirtualRouter);
-                    //TODO not  sure if we need this break????!!!!
-                    if (vpcVrProvider != null) {
-                        break;
-                    }
-                }
-                //TODO This is where I ended on 4/4/2014 need to find non VPC redundant routing for comparison
-                
-            PublicIp sourceNatIp = _vpcMgr.assignSourceNatIpAddressToVpc(owner, vpc);
-            DomainRouterVO router = deployVpcRouter(owner, dest, plan, params, isRedundant, vpcVrProvider, offeringId,
-                    vpc.getId(), sourceNatIp);
-            routers.add(router);
-            isRedundant = false;
-            }
-        } finally {
-            if (vpcLock != null) {
-                _vpcDao.releaseFromLockTable(vpc.getId());
-            }
-        }
+                 }
+                 vpcVrProvider = _vrProviderDao.findByNspIdAndType(provider.getId(),rType);
+                 //Deploy the correct router.
+                 boolean isRedundant;
+                 switch (rType) {
+                     case VPCVirtualRouter:{
+                         isRedundant = false;
+                         break;
+                     }
+                     case VPCRedundantVirtualRouter: {
+                         isRedundant = true;
+                         break;
+                     }
+                     case ElasticLoadBalancerVm:
+                     case InternalLbVm:
+                     case VirtualRouter:
+                     default:{
+                         throw new CloudRuntimeException("Unkown Router Type "+ rType.toString()+" Network ID = " + pNtwk.getId());
+                     }
+                         }
+                 PublicIp sourceNatIp = _vpcMgr.assignSourceNatIpAddressToVpc(owner, vpc);
+                 router = deployVpcRouter(owner, dest, plan, params, isRedundant, vpcVrProvider, offeringId,vpc.getId(), sourceNatIp);
+                 routers.add(router);
+                 }
+        }finally {
+                 if (vpcLock != null) {
+                     _vpcDao.releaseFromLockTable(vpc.getId());
+                 }
+             }
         return routers;
     }
-    
     protected Pair<DeploymentPlan, List<DomainRouterVO>> getDeploymentPlanAndRouters(long vpcId, DeployDestination dest) {
         long dcId = dest.getDataCenter().getId();
-        
+        //The instantiation of DataCenterDeployment only gets dcId no other deployment
+        //fields are populated. See DataCenterDeployment constructor(s).
         DeploymentPlan plan = new DataCenterDeployment(dcId);
+        
         List<DomainRouterVO> routers = getVpcRouters(vpcId);
         
         return new Pair<DeploymentPlan, List<DomainRouterVO>>(plan, routers);
