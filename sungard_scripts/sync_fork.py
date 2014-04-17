@@ -1,6 +1,7 @@
 #!/usr/bin/env python 
 
 import git
+import os
 
 '''
 The intent of this script is to sync two remotes, where one remote has local branches,
@@ -43,12 +44,12 @@ try :
     
     # debugging options:
     if True:
-        import os
         os.environ["GIT_PYTHON_TRACE"] = "True"
     
     # load the local copy of the repo:
     # TODO:  allow others to use this too, not just me on my mac (environmental variable?):
-    repo = git.Repo("/users/eric.chazan/edisondev/src/cloudstack-sungard", odbt=git.GitCmdObjectDB)
+    repo_location = "/users/eric.chazan/edisondev/src/cloudstack-sungard"
+    repo = git.Repo(repo_location, odbt=git.GitCmdObjectDB)
     
     
     # verify all remotes exist, and are appropriate:
@@ -112,6 +113,11 @@ try :
         else:
             log_lines.append(str(result.remote_ref) + ' ' + result.summary[:-1])
     results_as_strings = [str(result.remote_ref) + ' ' + result.summary[:-1] for result in results]
+    
+    # Clean the working tree.  Note:  I suspect a bug in GitPython is causing some files to appear staged at the end of this script.  
+    # Oh well, we can clean them up!
+    repo.index.reset(working_tree=True)
+    [os.remove(repo_location +'/' +untracked_file) for untracked_file in repo.untracked_files]
 
     log_lines.append('number of unpushed branches: ' + str(num_up_to_date))
     
