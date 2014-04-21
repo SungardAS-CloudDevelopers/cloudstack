@@ -3706,6 +3706,9 @@ public class VirtualNetworkApplianceManagerImpl extends ManagerBase implements V
             @Override
             public boolean execute(Network network, VirtualRouter router) throws ResourceUnavailableException {
                 Commands cmds = new Commands(Command.OnError.Continue);
+                //this method call creates a list of commands to associate an IP to a router
+                //the list of command is returned in cmds parameter, then passed to the
+                //sendCommandsToRouter method
                 createAssociateIPCommands(router, ipAddress, cmds, 0);
                 return sendCommandsToRouter(router, cmds);
             }

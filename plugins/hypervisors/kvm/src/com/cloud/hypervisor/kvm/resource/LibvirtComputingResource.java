@@ -1907,7 +1907,7 @@ ServerResource {
 
     private SetupGuestNetworkAnswer execute(SetupGuestNetworkCommand cmd) {
         //this command assumes a NIC/MAC pair already exist
-        //TODO We need to find out where they are created!!
+        //Network guru takes care of creation of NIC/MAC pairs
         Connect conn;
         NicTO nic = cmd.getNic();
         String routerIP = cmd.getAccessDetail(NetworkElementCommand.ROUTER_IP);
@@ -1918,6 +1918,8 @@ ServerResource {
         String domainName = cmd.getNetworkDomain();
         String dns = cmd.getDefaultDns1();
         boolean redundant = cmd.isRedundant();
+        //TODO What assumptions are made for public cloud redundant router addresses we
+        //need to look into cloud-early-config.sh
         //if the guest network is redundant then we need to populate the parameters for the
         //backup router.
         //From where??

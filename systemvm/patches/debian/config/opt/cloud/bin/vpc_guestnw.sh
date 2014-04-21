@@ -134,8 +134,9 @@ desetup_passwdsvcs() {
 #network
 create_redundant_guest_network() {
   echo -t cloud "Creating Redundant Guest Network"
-  
-  
+    # Assumption when called: network guru should take care of creating the eth device needed for public and VPC normal and redundant networks.
+
+  create_guest_network
   
   
 #Check if this guest network already exists.
@@ -164,8 +165,74 @@ create_redundant_guest_network() {
 #fi
 }
 
+#TODO needs to be changed to accomdate vpc_guestnw.sh context to
+#to set up VPC redundant routers, listed below is a template of the
+#script used for public redundant routers for reference. It will be
+#deleted when coding is complete.
+
+#setup_redundant_router() {
+#    rrouter_bin_path="/ramdisk/rrouter"
+    #    rrouter_log="/ramdisk/rrouter/keepalived.log"
+    #rrouter_bin_path_str="\/ramdisk\/rrouter"
+    #rrouter_log_str="\/ramdisk\/rrouter\/keepalived.log"
+    #mkdir -p /ramdisk
+    #mount tmpfs /ramdisk -t tmpfs
+    #mkdir -p /ramdisk/rrouter
+    #ip route delete default
+    #cp /root/redundant_router/keepalived.conf.templ /etc/keepalived/keepalived.conf
+    #cp /root/redundant_router/conntrackd.conf.templ /etc/conntrackd/conntrackd.conf
+    #cp /root/redundant_router/enable_pubip.sh.templ $rrouter_bin_path/enable_pubip.sh
+    #cp /root/redundant_router/master.sh.templ $rrouter_bin_path/master.sh
+    #cp /root/redundant_router/backup.sh.templ $rrouter_bin_path/backup.sh
+    #cp /root/redundant_router/fault.sh.templ $rrouter_bin_path/fault.sh
+    #cp /root/redundant_router/primary-backup.sh.templ $rrouter_bin_path/primary-backup.sh
+    #cp /root/redundant_router/heartbeat.sh.templ $rrouter_bin_path/heartbeat.sh
+    #cp /root/redundant_router/check_heartbeat.sh.templ $rrouter_bin_path/check_heartbeat.sh
+    #cp /root/redundant_router/arping_gateways.sh.templ $rrouter_bin_path/arping_gateways.sh
+    #cp /root/redundant_router/check_bumpup.sh $rrouter_bin_path/
+    #cp /root/redundant_router/disable_pubip.sh $rrouter_bin_path/
+    #cp /root/redundant_router/checkrouter.sh.templ /opt/cloud/bin/checkrouter.sh
+    #cp /root/redundant_router/services.sh $rrouter_bin_path/
+    #sed -i "s/\[ROUTER_ID\]/$NAME/g" /etc/keepalived/keepalived.conf
+    #sed -i "s/\[ROUTER_IP\]/$GUEST_GW\/$GUEST_CIDR_SIZE/g" /etc/keepalived/keepalived.conf
+    #sed -i "s/\[BOARDCAST\]/$GUEST_BRD/g" /etc/keepalived/keepalived.conf
+    #sed -i "s/\[PRIORITY\]/$ROUTER_PR/g" /etc/keepalived/keepalived.conf
+    #sed -i "s/\[RROUTER_BIN_PATH\]/$rrouter_bin_path_str/g" /etc/keepalived/keepalived.conf
+    #sed -i "s/\[DELTA\]/2/g" /etc/keepalived/keepalived.conf
+    #sed -i "s/\[LINK_IF\]/eth0/g" /etc/conntrackd/conntrackd.conf
+    #sed -i "s/\[LINK_IP\]/$ETH0_IP/g" /etc/conntrackd/conntrackd.conf
+    #sed -i "s/\[IGNORE_IP1\]/$GUEST_GW/g" /etc/conntrackd/conntrackd.conf
+    #sed -i "s/\[IGNORE_IP2\]/$ETH0_IP/g" /etc/conntrackd/conntrackd.conf
+    #sed -i "s/\[IGNORE_IP3\]/$ETH1_IP/g" /etc/conntrackd/conntrackd.conf
+    #sed -i "s/\[ETH2IP\]/$ETH2_IP/g" $rrouter_bin_path/enable_pubip.sh
+    #sed -i "s/\[ETH2MASK\]/$ETH2_MASK/g" $rrouter_bin_path/enable_pubip.sh
+    #sed -i "s/\[GATEWAY\]/$GW/g" $rrouter_bin_path/enable_pubip.sh
+    #sed -i "s/\[GATEWAY\]/$GW/g" $rrouter_bin_path/master.sh
+    #sed -i "s/\[RROUTER_BIN_PATH\]/$rrouter_bin_path_str/g" $rrouter_bin_path/master.sh
+    #sed -i "s/\[RROUTER_BIN_PATH\]/$rrouter_bin_path_str/g" $rrouter_bin_path/backup.sh
+    #sed -i "s/\[RROUTER_BIN_PATH\]/$rrouter_bin_path_str/g" $rrouter_bin_path/fault.sh
+    #sed -i "s/\[RROUTER_BIN_PATH\]/$rrouter_bin_path_str/g" $rrouter_bin_path/heartbeat.sh
+    #sed -i "s/\[RROUTER_BIN_PATH\]/$rrouter_bin_path_str/g" $rrouter_bin_path/check_heartbeat.sh
+    #sed -i "s/\[RROUTER_LOG\]/$rrouter_log_str/g" $rrouter_bin_path/master.sh
+    #sed -i "s/\[RROUTER_LOG\]/$rrouter_log_str/g" $rrouter_bin_path/backup.sh
+    #sed -i "s/\[RROUTER_LOG\]/$rrouter_log_str/g" $rrouter_bin_path/fault.sh
+    #sed -i "s/\[RROUTER_LOG\]/$rrouter_log_str/g" $rrouter_bin_path/primary-backup.sh
+    #sed -i "s/\[RROUTER_LOG\]/$rrouter_log_str/g" $rrouter_bin_path/check_heartbeat.sh
+    #sed -i "s/\[RROUTER_LOG\]/$rrouter_log_str/g" $rrouter_bin_path/arping_gateways.sh
+    #sed -i "s/\[RROUTER_LOG\]/$rrouter_log_str/g" /opt/cloud/bin/checkrouter.sh
+    #chmod a+x $rrouter_bin_path/*.sh
+
+    #    sed -i "s/--exec\ \$DAEMON;/--exec\ \$DAEMON\ --\ --vrrp;/g" /etc/init.d/keepalived
+    #crontab -l|grep "check_heartbeat.sh"
+    #if [ $? -ne 0 ]
+    #then
+        #    (crontab -l; echo -e "SHELL=/bin/bash\nPATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin\n*/1 * * * * $rrouter_bin_path/check_heartbeat.sh 2>&1 > /dev/null") | crontab
+    #fi
+#}
+
 create_guest_network() {
-  # need to wait for eth device to appear before configuring it
+  # need to wait for hypervisor,etc to create eth device and for the device to appear before configuring it
+
   timer=0
   while ! `grep -q $local_dev /proc/net/dev` ; do
     logger -t cloud "$(basename $0):Waiting for interface $local_dev to appear, $timer seconds"
@@ -416,7 +483,7 @@ then
 	
 	if [ "$Dflag" == "1" ]
 	then
-			destroy_redundant_guest_network
+		destroy_redundant_guest_network
 	fi
 else
 	ip = $in_ip
