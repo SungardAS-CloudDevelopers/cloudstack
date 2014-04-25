@@ -47,8 +47,8 @@ try :
         os.environ["GIT_PYTHON_TRACE"] = "True"
     
     # load the local copy of the repo:
-    # TODO:  allow others to use this too, not just me on my mac (environmental variable?):
-    repo_location = "/users/eric.chazan/edisondev/src/cloudstack-sungard"
+    # TODO:  This shouldn't be hard-coded
+    repo_location = "/root/cloudstack"
     repo = git.Repo(repo_location, odbt=git.GitCmdObjectDB)
     
     
@@ -122,8 +122,11 @@ try :
     log_lines.append('number of unpushed branches: ' + str(num_up_to_date))
     
         
-    # Leave these alone.  All the alice branches are here.
-    # TODO: Detect and destroy upstream branch deletions (if possible)
+    # These branches are one of the following:
+    # 1) branches that are local to this repo.
+    # 2) branches that are local to the upstream repo, but deleted.  
+    #
+    # Since this script is stateless, there isn't a way to tell the difference
     for branch in other_branches:
         log_lines.append("If " + str(branch) + " is not a private repo branch, consider removing it.")
     
@@ -132,5 +135,5 @@ except:
     import traceback
     log_lines.append(traceback.format_exc())
 
-# TODO: make this an email:
+# Note, this should be redirected when run (e.g. 'python sync_fork.py >> /var/log/messages'
 print '\n'.join(log_lines)
