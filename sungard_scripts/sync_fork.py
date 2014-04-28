@@ -33,9 +33,6 @@ try :
     main_branch = 'master'
     email_user = 'eric.chazan@sungardas.com'
     
-    # log to send
-    log_lines = []
-    
     
     # return the name of the branch, splitting off the origin location from the string.
     def branch_name(ref):
@@ -108,13 +105,13 @@ try :
     results = sungardas_repo.push(all=True, force = True)
 
     # appends the results to the log:
-    log_lines.append('push result:')
+    print 'push result:'
     num_up_to_date = 0
     for result in results:
         if result.summary.startswith('[up to date]'):
             num_up_to_date += 1
         else:
-            log_lines.append(str(result.remote_ref) + ' ' + result.summary[:-1])
+            print str(result.remote_ref) + ' ' + result.summary[:-1]
     results_as_strings = [str(result.remote_ref) + ' ' + result.summary[:-1] for result in results]
     
     # Clean the working tree.  Note:  I suspect a bug in GitPython is causing some files to appear staged at the end of this script.  
@@ -122,7 +119,7 @@ try :
     repo.index.reset(working_tree=True)
     [os.remove(repo_location +'/' +untracked_file) for untracked_file in repo.untracked_files]
 
-    log_lines.append('number of unpushed branches: ' + str(num_up_to_date))
+    print 'number of unpushed branches: ' + str(num_up_to_date)
     
         
     # These branches are one of the following:
@@ -131,12 +128,9 @@ try :
     #
     # Since this script is stateless, there isn't a way to tell the difference
     for branch in other_branches:
-        log_lines.append("If " + str(branch) + " is not a private repo branch, consider removing it.")
+        print "If " + str(branch) + " is not a private repo branch, consider removing it."
     
-    log_lines.append('done.')
+    print 'done.'
 except:
     import traceback
-    log_lines.append(traceback.format_exc())
-
-# Note, this should be redirected when run (e.g. 'python sync_fork.py >> /var/log/messages'
-print '\n'.join(log_lines)
+    print traceback.format_exc()
