@@ -5,7 +5,10 @@ import os
 
 '''
 The intent of this script is to sync two remotes, where one remote has local branches,
-Not existant on the other branch. (Keep Alice on one side of the mirror!!!)
+Not existant on the other remote. (Keep Alice on one side of the mirror!!!)
+
+This way we can keep a 'mirror' and maintain branches not on the true origin.  Intended to be run a few
+times per day like a daemon process
 
 Prerequisite:  a clone of gitpython from 4/4/2014, or access to Eric Chazan's gitpython repo (equivalent)
 
