@@ -304,7 +304,7 @@ remove_an_ip () {
 }
 
 enable_rpsrfs() {
-    #enable rps and rfs for this new interface
+    #enable rps (Recieved Packet Steering) and rfs (Recieved Flow Steering) for this new interface
     if [  -f /etc/rpsrfsenable ]
     then
         enable=$(cat /etc/rpsrfsenable)
@@ -340,6 +340,7 @@ cflag=
 nflag=
 op=""
 
+#if master router of a redundant pair, if so don't update state router's state
 is_master=0
 is_redundant=0
 if_keep_state=0
@@ -357,6 +358,17 @@ if [ $is_redundant -eq 1 -a $is_master -ne 1 ]
 then
     if_keep_state=1
 fi
+
+#Check to see what we need to do.
+# A: Only used to filter correct parameters ADD IP
+# D: Only used to filter correct parameters DELETE IP
+# s: Skip(?) 
+# f: This is the first IP
+# n: New interface
+# a: Not Used
+# l: public IP address
+# c: Ethernet device
+# g: Gateway IP address default
 
 while getopts 'sfADna:l:c:g:' OPTION
 do

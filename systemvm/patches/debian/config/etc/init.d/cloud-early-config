@@ -1019,7 +1019,29 @@ EOF
   sudo echo "251 static_route_back" >> /etc/iproute2/rt_tables 2>/dev/null
   sudo ip rule add from $VPCCIDR table static_route 2>/dev/null
   sudo ip rule add from $VPCCIDR table static_route_back 2>/dev/null
+#
+#
+#
+# TODO Somewhere around here we need to add the Check for redundant VPC router and 
+# if this is a redundant router the code should setup initial keepalived
+# and conntrackd functions. See public redundant router function 
+# setup_redundant_router for hints and code reuse. There are many things happening 
+# after this code so we need to be careful about interactions and the correct configurations.
+# Question: Does contrackd need to know about which services dns/haproxy/load balancer etc
+# are enabled?
+# Here is the check for redundant router used in public router setup function, I'm not sure it's valid for
+# VPCvrr because of the $ETH2_IP clause.
+#
+#  if [ -n "$ETH2_IP" -a "$RROUTER" == "1" ]
+#  then
+#    setup_redundant_router
+#  fi
+# See below 
+#
+#
+#
 
+#Add functions 
   setup_vpc_apache2
 
   enable_svc dnsmasq 1

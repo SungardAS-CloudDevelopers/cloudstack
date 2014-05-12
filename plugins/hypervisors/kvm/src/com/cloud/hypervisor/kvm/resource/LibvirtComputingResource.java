@@ -1921,10 +1921,10 @@ ServerResource {
         //TODO What assumptions are made for public cloud redundant router addresses we
         //need to look into cloud-early-config.sh
         //if the guest network is redundant then we need to populate the parameters for the
-        //backup router.
-        //From where??
+        //backup router. The redundant parameters should be set by the Guru responsible for 
+        //the VPC redundant router orchestration/provisioning.
         if (redundant) {
-            //populate the backup router parameters
+            //TODO populate the backup router parameters
         }
 
         if (dns == null || dns.isEmpty()) {

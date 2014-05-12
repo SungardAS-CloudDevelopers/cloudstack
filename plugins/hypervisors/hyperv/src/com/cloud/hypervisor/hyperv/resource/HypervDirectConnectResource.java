@@ -737,6 +737,7 @@ public class HypervDirectConnectResource extends ServerResourceBase implements S
                     "/opt/cloud/bin/vpc_snat.sh " + args);
 
             if (!result.first()) {
+                //FIXME Is this message correct?
                 String msg = "SetupGuestNetworkCommand on domain router " + routerIp + " failed. message: " + result.second();
                 s_logger.error(msg);
 
