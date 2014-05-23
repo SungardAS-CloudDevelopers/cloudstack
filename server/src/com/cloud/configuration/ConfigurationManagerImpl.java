@@ -3213,7 +3213,7 @@ ConfigurationManagerImpl extends ManagerBase implements ConfigurationManager, Co
             @Override
             public void doInTransactionWithoutResult(TransactionStatus status) {
                 _publicIpAddressDao.deletePublicIPRange(vlanDbId);
-                _vlanDao.expunge(vlanDbId);
+                _vlanDao.remove(vlanDbId);
             }
         });
 

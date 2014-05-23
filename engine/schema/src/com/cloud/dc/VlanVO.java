@@ -16,6 +16,9 @@
 // under the License.
 package com.cloud.dc;
 
+import com.cloud.utils.db.GenericDao;
+
+import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -76,26 +79,34 @@ public class VlanVO implements Vlan {
     @Column(name="uuid")
     String uuid;
 
-	public VlanVO(VlanType vlanType, String vlanTag, String vlanGateway, String vlanNetmask, long dataCenterId, String ipRange, Long networkId, Long physicalNetworkId, String ip6Gateway, String ip6Cidr, String ip6Range) {
-		this.vlanType = vlanType;
-		this.vlanTag = vlanTag;
-		this.vlanGateway = vlanGateway;
-		this.vlanNetmask = vlanNetmask;
-		this.ip6Gateway = ip6Gateway;
-		this.ip6Cidr = ip6Cidr;
-		this.dataCenterId = dataCenterId;
-		this.ipRange = ipRange;
-		this.ip6Range = ip6Range;
-		this.networkId = networkId;
-		this.uuid = UUID.randomUUID().toString();
-		this.physicalNetworkId = physicalNetworkId;
-	}
+    @Column(name= GenericDao.REMOVED_COLUMN)
+    private Date removed;
 
-	public VlanVO() {
-		this.uuid = UUID.randomUUID().toString();
-	}
+    @Column(name = GenericDao.CREATED_COLUMN)
+    private Date created;
 
-	@Override
+
+    public VlanVO(VlanType vlanType, String vlanTag, String vlanGateway, String vlanNetmask, long dataCenterId, String ipRange, Long networkId, Long physicalNetworkId,
+            String ip6Gateway, String ip6Cidr, String ip6Range) {
+        this.vlanType = vlanType;
+        this.vlanTag = vlanTag;
+        this.vlanGateway = vlanGateway;
+        this.vlanNetmask = vlanNetmask;
+        this.ip6Gateway = ip6Gateway;
+        this.ip6Cidr = ip6Cidr;
+        this.dataCenterId = dataCenterId;
+        this.ipRange = ipRange;
+        this.ip6Range = ip6Range;
+        this.networkId = networkId;
+        this.uuid = UUID.randomUUID().toString();
+        this.physicalNetworkId = physicalNetworkId;
+    }
+
+    public VlanVO() {
+        this.uuid = UUID.randomUUID().toString();
+    }
+
+    @Override
     public long getId() {
 		return id;
 	}
@@ -151,6 +162,16 @@ public class VlanVO implements Vlan {
     public void setUuid(String uuid) {
     	this.uuid = uuid;
     }
+    @Override
+    public Date getRemoved() {
+        return removed;
+    }
+
+    @Override
+    public Date getCreated() {
+        return created;
+    }
+
     @Override
     public Long getPhysicalNetworkId() {
         return physicalNetworkId;

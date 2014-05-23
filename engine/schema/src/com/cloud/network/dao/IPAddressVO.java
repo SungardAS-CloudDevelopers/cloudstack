@@ -32,6 +32,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.cloud.network.IpAddress;
+import com.cloud.utils.db.GenericDao;
 import com.cloud.utils.net.Ip;
 
 /**
@@ -114,9 +115,18 @@ public class IPAddressVO implements IpAddress {
     @Column(name="is_portable")
     private boolean portable = false;
 
-	protected IPAddressVO() {
-		this.uuid = UUID.randomUUID().toString();
-	}
+    @Column(name = "display", updatable = true, nullable = false)
+    protected boolean display = true;
+
+    @Column(name= GenericDao.REMOVED_COLUMN)
+    private Date removed;
+
+    @Column(name = GenericDao.CREATED_COLUMN)
+    private Date created;
+
+    protected IPAddressVO() {
+        uuid = UUID.randomUUID().toString();
+    }
 
 	@Override
     public boolean readyToUse() {
@@ -332,5 +342,29 @@ public class IPAddressVO implements IpAddress {
     @Override
     public Long getNetworkId() {
         return sourceNetworkId;
+    }
+
+    @Override
+    public boolean isDisplay() {
+        return display;
+    }
+
+    public void setDisplay(boolean display) {
+        this.display = display;
+    }
+
+    @Override
+    public Class<?> getEntityType() {
+        return IpAddress.class;
+    }
+
+    @Override
+    public Date getRemoved() {
+        return removed;
+    }
+
+    @Override
+    public Date getCreated() {
+        return created;
     }
 }

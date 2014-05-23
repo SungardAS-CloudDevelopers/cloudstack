@@ -232,4 +232,24 @@ public class PublicIp implements PublicIpAddress {
     public Long getIpMacAddress() {
         return  _addr.getMacAddress();
     }
+
+    @Override
+    public boolean isDisplay() {
+        return _addr.isDisplay();
+    }
+
+    @Override
+    public Date getRemoved() {
+        return _addr.getRemoved();
+    }
+
+    @Override
+    public Date getCreated() {
+        return _addr.getCreated();
+    }
+
+    @Override
+    public Class<?> getEntityType() {
+        return IpAddress.class;
+    }
 }
