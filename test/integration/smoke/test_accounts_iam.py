@@ -190,7 +190,10 @@ class TestAccountIam(cloudstackTestCase):
         )   
         
         self._cleanup = [
+                        self.account_1A,
+                        self.account_1B,
                         self.domain_1,
+                        self.account_2A,
                         self.domain_2,
                         self.account_read_policy,
                         self.srv_desk_grp,

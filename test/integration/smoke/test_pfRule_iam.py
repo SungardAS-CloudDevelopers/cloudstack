@@ -404,11 +404,11 @@ class TestPFIam(cloudstackTestCase):
         ) 
         
         self._cleanup = [
-                        self.domain_1,
-                        self.domain_2,
                         self.account_1A,
                         self.account_1B,
+                        self.domain_1,
                         self.account_2A,
+                        self.domain_2,
                         self.service_offering,
                         self.network_offering,
                         self.pf_read_policy,
