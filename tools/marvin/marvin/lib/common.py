@@ -35,6 +35,11 @@ from marvin.cloudstackAPI import (listConfigurations,
                                   listSystemVms,
                                   listStoragePools,
                                   listVirtualMachines,
+                                  listTags,
+                                  listSecurityGroups,
+                                  listProjectInvitations,
+                                  listProjects,
+                                  listInstanceGroups,
                                   listLoadBalancerRuleInstances,
                                   listFirewallRules,
                                   listVolumes,
@@ -549,6 +554,50 @@ def list_virtual_machines(apiclient, **kwargs):
         cmd.listall=True
     return(apiclient.listVirtualMachines(cmd))
 
+def list_tags(apiclient, **kwargs):
+    """List all Tags matching criteria"""
+
+    cmd = listTags.listTagsCmd()
+    [setattr(cmd, k, v) for k, v in kwargs.items()]
+    if 'account' in kwargs.keys() and 'domainid' in kwargs.keys():
+        cmd.listall=True
+    return(apiclient.listTags(cmd))
+
+def list_security_groups(apiclient, **kwargs):
+    """List all security groups matching criteria"""
+
+    cmd = listSecurityGroups.listSecurityGroupsCmd()
+    [setattr(cmd, k, v) for k, v in kwargs.items()]
+    if 'account' in kwargs.keys() and 'domainid' in kwargs.keys():
+        cmd.listall=True
+    return(apiclient.listSecurityGroups(cmd))
+
+def list_project_invitations(apiclient, **kwargs):
+    """List all project invitations matching criteria"""
+
+    cmd = listProjectInvitations.listProjectInvitationsCmd()
+    [setattr(cmd, k, v) for k, v in kwargs.items()]
+    if 'account' in kwargs.keys() and 'domainid' in kwargs.keys():
+        cmd.listall=True
+    return(apiclient.listProjectInvitations(cmd))
+
+def list_projects(apiclient, **kwargs):
+    """List all projects matching criteria"""
+
+    cmd = listProjects.listProjectsCmd()
+    [setattr(cmd, k, v) for k, v in kwargs.items()]
+    if 'account' in kwargs.keys() and 'domainid' in kwargs.keys():
+        cmd.listall=True
+    return(apiclient.listProjects(cmd))
+
+def list_instance_groups(apiclient, **kwargs):
+    """List all instance groups matching criteria"""
+
+    cmd = listInstanceGroups.listInstanceGroupsCmd()
+    [setattr(cmd, k, v) for k, v in kwargs.items()]
+    if 'account' in kwargs.keys() and 'domainid' in kwargs.keys():
+        cmd.listall=True
+    return(apiclient.listInstanceGroups(cmd))
 
 def list_hosts(apiclient, **kwargs):
     """List all Hosts matching criteria"""
