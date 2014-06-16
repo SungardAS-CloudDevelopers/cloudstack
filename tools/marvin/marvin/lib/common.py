@@ -40,6 +40,8 @@ from marvin.cloudstackAPI import (listConfigurations,
                                   listProjectInvitations,
                                   listProjects,
                                   listInstanceGroups,
+                                  listGlobalLoadBalancerRules,
+                                  listRemoteAccessVpns,
                                   listLoadBalancerRuleInstances,
                                   listFirewallRules,
                                   listVolumes,
@@ -598,6 +600,24 @@ def list_instance_groups(apiclient, **kwargs):
     if 'account' in kwargs.keys() and 'domainid' in kwargs.keys():
         cmd.listall=True
     return(apiclient.listInstanceGroups(cmd))
+
+def list_global_lb_rules(apiclient, **kwargs):
+    """List all global LB rules matching criteria"""
+
+    cmd = listGlobalLoadBalancerRules.listGlobalLoadBalancerRulesCmd()
+    [setattr(cmd, k, v) for k, v in kwargs.items()]
+    if 'account' in kwargs.keys() and 'domainid' in kwargs.keys():
+        cmd.listall=True
+    return(apiclient.listGlobalLoadBalancerRules(cmd))
+
+def list_remote_access_vpns(apiclient, **kwargs):
+    """List all remote access vpns matching criteria"""
+
+    cmd = listRemoteAccessVpns.listRemoteAccessVpnsCmd()
+    [setattr(cmd, k, v) for k, v in kwargs.items()]
+    if 'account' in kwargs.keys() and 'domainid' in kwargs.keys():
+        cmd.listall=True
+    return(apiclient.listRemoteAccessVpns(cmd))
 
 def list_hosts(apiclient, **kwargs):
     """List all Hosts matching criteria"""
