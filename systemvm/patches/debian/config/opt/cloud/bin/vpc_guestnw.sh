@@ -16,7 +16,7 @@
 # specific language governing permissions and limitations
 # under the License.
 
-# guestnw.sh -- create/destroy guest network 
+# guestnw.sh -- create/destroy guest network
 # @VERSION@
 
 source /root/func.sh
@@ -30,8 +30,11 @@ then
 fi
 
 usage() {
-  printf "Usage:\n %s -A  -M <mac> -d <dev> -i <ip address> -g <gateway> -m <network mask> -s <dns ip> -e < domain> [-f] \n" $(basename $0) >&2
+
+  printf "Usage:\n %s -A -d <dev> -i <ip address> -g <gateway> -m <network mask> -s <dns ip> -e < domain> [-f] \n" $(basename $0) >&2
+
   printf " %s -D -d <dev> -i <ip address> \n" $(basename $0) >&2
+#TODO add additional usage patterns to correspond to filters below.
 }
 
 
@@ -87,7 +90,7 @@ setup_dnsmasq() {
   sudo iptables -A INPUT -i $dev -p udp -m udp --dport 67 -j ACCEPT
   sudo iptables -A INPUT -i $dev -d $ip -p udp -m udp --dport 53 -j ACCEPT
   sudo iptables -A INPUT -i $dev -d $ip -p tcp -m tcp --dport 53 -j ACCEPT
-  # setup static 
+  # setup static
   sed -i -e "/^[#]*dhcp-range=interface:$dev/d" /etc/dnsmasq.d/cloud.conf
   echo "dhcp-range=interface:$dev,set:interface-$dev,$ip,static" >> /etc/dnsmasq.d/cloud.conf
   # setup DOMAIN
@@ -97,7 +100,7 @@ setup_dnsmasq() {
   echo "dhcp-option=tag:interface-$dev,15,$DOMAIN" >> /etc/dnsmasq.d/cloud.conf
   service dnsmasq restart
   sleep 1
-} 
+}
 
 desetup_dnsmasq() {
   logger -t cloud "Desetting up dnsmasq for network $ip/$mask "
@@ -125,7 +128,7 @@ desetup_passwdsvcs() {
   if [ -n "$pid" ]
   then
     kill -9 $pid
-  fi 
+  fi
 }
 
 create_guest_network() {
@@ -135,7 +138,7 @@ create_guest_network() {
   # match dev based on mac, if passed
   if [[ ! -z "$mac" ]]; then
     logger -t cloud "$(basename $0): mac $mac passed, trying to match to device"
-    while [ ! $timer -gt 15 ]; do 
+    while [ ! $timer -gt 15 ]; do
       for i in `ls /sys/class/net`; do
         if grep -q $mac /sys/class/net/$i/address; then
           dev=$i
@@ -239,55 +242,69 @@ destroy_guest_network() {
 iflag=0
 mflag=0
 nflag=0
+reduniflag=0
+redundevflag=0
 dflag=
 gflag=
 Cflag=
 Dflag=
+<<<<<<< HEAD
 Mflag=
+=======
+Rflag=
+>>>>>>> 347aca5... Finally first code for VPC redundant routers.
 
 op=""
 
 
-while getopts 'CDn:m:M:d:i:g:s:e:' OPTION
+while getopts 'CDRn:m:d:i:g:s:e:r:p:' OPTION
 do
   case $OPTION in
-  C)	Cflag=1
-		op="-C"
-		;;
-  D)	Dflag=1
-		op="-D"
-		;;
-  n)	nflag=1
-		subnet="$OPTARG"
-		;;
-  m)	mflag=1
-		mask="$OPTARG"
-		;;
-  M)    Mflag=1
-                mac="$OPTARG"
-                ;;
-  d)	dflag=1
-  		dev="$OPTARG"
-  		;;
-  i)	iflag=1
-		ip="$OPTARG"
-  		;;
-  g)	gflag=1
-  		gw="$OPTARG"
-                ;;
-  s)    sflag=1
-                DNS="$OPTARG"
-                ;;
-  e)    eflag=1
-		DOMAIN="$OPTARG"
-  		;;
-  ?)	usage
-                unlock_exit 2 $lock $locked
-		;;
+	  C)	Cflag=1
+			op="-C"
+			;;
+	  D)	Dflag=1
+			op="-D"
+			;;
+	 R)     Rflag=1
+			op="-R"
+			;;
+	  n)	nflag=1
+			subnet="$OPTARG"
+			;;
+	  m)	mflag=1
+			mask="$OPTARG"
+			;;
+	  d)	dflag=1
+	  		dev="$OPTARG"
+	  		;;
+	p)		redundevflag=1
+	  		redundev="$OPTARG"
+	  		;;
+	  i)	iflag=1
+			ip="$OPTARG"
+	  		;;
+	r)	reduniflag=1
+			redunip="$OPTARG"
+	  		;;
+	  g)	gflag=1
+	  		gw="$OPTARG"
+	                ;;
+	  s)    sflag=1
+	                DNS="$OPTARG"
+	                ;;
+	  e)    eflag=1
+			DOMAIN="$OPTARG"
+	  		;;
+	  ?)	usage
+	                unlock_exit 2 $lock $locked
+			;;
   esac
 done
 
 vpccidr=$(getVPCcidr)
+
+#Filter for correct commands
 
 if [ "$Cflag$Dflag$dflag" != "11" ]
 then
@@ -301,16 +318,22 @@ then
     unlock_exit 2 $lock $locked
 fi
 
-
-if [ "$Cflag" == "1" ]
-then  
-  create_guest_network 
-fi
-
-
-if [ "$Dflag" == "1" ]
+#TODO Need to add filter for redundant router backup IP, etc.
+if [ "$Rflag == "1" ]
 then
-  destroy_guest_network
+# TODO add redundant router code for create/destroy
+else
+
+	if [ "$Cflag" == "1" ]
+	then
+	  create_guest_network
+	fi
+
+
+	if [ "$Dflag" == "1" ]
+	then
+	  destroy_guest_network
+	fi
 fi
 
 unlock_exit 0 $lock $locked
