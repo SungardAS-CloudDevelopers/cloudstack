@@ -2103,10 +2103,33 @@ public class LibvirtComputingResource extends ServerResourceBase implements Serv
     }
 
     private ExecutionResult prepareNetworkElementCommand(SetupGuestNetworkCommand cmd) {
+}
+    private SetupGuestNetworkAnswer execute(SetupGuestNetworkCommand cmd) {
+        //this command assumes a NIC/MAC pair already exist
+        //We need to find out where they are created!!
         Connect conn;
         NicTO nic = cmd.getNic();
         String routerName = cmd.getAccessDetail(NetworkElementCommand.ROUTER_NAME);
+        String gateway = cmd.getAccessDetail(NetworkElementCommand.GUEST_NETWORK_GATEWAY);
+        String cidr = Long.toString(NetUtils.getCidrSize(nic.getNetmask()));
+        String domainName = cmd.getNetworkDomain();
+        String dns = cmd.getDefaultDns1();
+        boolean redundant = cmd.isRedundant();
+        //if the guest network is redundant then we need to populate the parameters for the
+        //backup router.
+        //From where??
+        if (redundant) {
+            //populate the backup router parameters
+        }
 
+        if (dns == null || dns.isEmpty()) {
+            dns = cmd.getDefaultDns2();
+        } else {
+            String dns2= cmd.getDefaultDns2();
+            if ( dns2 != null && !dns2.isEmpty()) {
+                dns += "," + dns2;
+            }
+        }
         try {
             conn = LibvirtConnection.getConnectionByVmName(routerName);
             List<InterfaceDef> pluggedNics = getInterfaces(conn, routerName);
@@ -2121,6 +2144,11 @@ public class LibvirtComputingResource extends ServerResourceBase implements Serv
 
             if (routerNic == null) {
                 return new ExecutionResult(false, "Can not find nic with mac " + nic.getMac() + " for VM " + routerName);
+
+            //if we don't find MAC address for the nic passed into this command tell everyone and
+            //bail out.
+            if ( routerNic == null ) {
+                return new SetupGuestNetworkAnswer(cmd, false, "Can not find nic with mac " + nic.getMac() + " for VM " + routerName);
             }
 
             return new ExecutionResult(true, null);
