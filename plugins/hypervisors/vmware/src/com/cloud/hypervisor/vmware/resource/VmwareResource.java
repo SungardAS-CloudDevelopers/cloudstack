@@ -772,9 +772,40 @@ public class VmwareResource implements StoragePoolResource, ServerResource, Vmwa
                 cmd.getAccessDetail(NetworkElementCommand.ROUTER_NAME);
 
         try {
-            int ethDeviceNum = findRouterEthDeviceIndex(domrName, routerIp,
-                    nic.getMac());
-            nic.setDeviceId(ethDeviceNum);
+
+            int ethDeviceNum = findRouterEthDeviceIndex(domrName, routerIp, nic.getMac());
+            s_logger.info("find interface index. routerIp: " + routerIp + ", mac: " + nic.getMac() + ", index: " + ethDeviceNum);
+
+            String args =(cmd.isAdd()?"-C":"-D")+(cmd.isRedundant()?" -R":"");
+            //TODO add eth numbers and other redundant parameters here.
+            String dev = "eth" + ethDeviceNum;
+            args += " -d " + dev;
+            args += " -i " + domrGIP;
+            args += " -g " + gw;
+            args += " -m " + cidr;
+            args += " -n " + NetUtils.getSubNet(domrGIP, nic.getNetmask());
+            if ( dns != null && !dns.isEmpty() ) {
+                args += " -s " + dns;
+            }
+            if ( domainName != null && !domainName.isEmpty() ) {
+                args += " -e " + domainName;
+            }
+
+            Pair<Boolean, String> result = SshHelper.sshExecute(routerIp, DEFAULT_DOMR_SSHPORT, "root", mgr.getSystemVMKeyFile(), null,
+                    "/opt/cloud/bin/vpc_guestnw.sh " + args);
+
+            if (!result.first()) {
+                String msg = "SetupGuestNetworkCommand on domain router " + routerIp + " failed. message: " + result.second();
+                s_logger.error(msg);
+
+                return new SetupGuestNetworkAnswer(cmd, false, msg);
+            }
+
+            if (s_logger.isInfoEnabled()) {
+                s_logger.info("SetupGuestNetworkCommand on domain router " + routerIp + " completed");
+            }
+
+            return new SetupGuestNetworkAnswer(cmd, true, "success");
         } catch (Exception e) {
             String msg = "Prepare SetupGuestNetwork failed due to " + e.toString();
             s_logger.warn(msg, e);

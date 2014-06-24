@@ -7403,6 +7403,9 @@ public abstract class CitrixResourceBase implements ServerResource, HypervisorRe
     private ExecutionResult prepareNetworkElementCommand(SetupGuestNetworkCommand cmd) {
         Connection conn = getConnection();
         NicTO nic = cmd.getNic();
+        boolean isRedundant = cmd.isRedundant();
+        String domrIP = cmd.getAccessDetail(NetworkElementCommand.ROUTER_IP);
+        String domrGIP = cmd.getAccessDetail(NetworkElementCommand.ROUTER_GUEST_IP);
         String domrName = cmd.getAccessDetail(NetworkElementCommand.ROUTER_NAME);
         try {
             Set<VM> vms = VM.getByNameLabel(conn, domrName);
@@ -7424,6 +7427,26 @@ public abstract class CitrixResourceBase implements ServerResource, HypervisorRe
             }
 
             nic.setDeviceId(Integer.valueOf(domrVif.getDevice(conn)));
+            String args = "vpc_guestnw.sh " + domrIP + (cmd.isAdd()?" -C":" -D") + (isRedundant?" -R":"");
+            String dev = "eth" + domrVif.getDevice(conn);
+            //TODO Design offset for redundant eth device
+            //TODO >>>>>>>Need to add redundant parameters here<<<<<<<<
+            args += " -d " + dev;
+            args += " -i " + domrGIP;
+            args += " -g " + gw;
+            args += " -m " + cidr;
+            args += " -n " + NetUtils.getSubNet(domrGIP, nic.getNetmask());
+            if ( dns != null && !dns.isEmpty() ) {
+                args += " -s " + dns;
+            }
+            if ( domainName != null && !domainName.isEmpty() ) {
+                args += " -e " + domainName;
+            }
+            String result = callHostPlugin(conn, "vmops", "routerProxy", "args", args);
+            if (result == null || result.isEmpty()) {
+                return new SetupGuestNetworkAnswer(cmd, false, "creating guest network failed due to " + ((result == null)? "null":result));
+            }
+            return new SetupGuestNetworkAnswer(cmd, true, "success");
         } catch (Exception e) {
             String msg = "Creating guest network failed due to " + e.toString();
             s_logger.warn(msg, e);
