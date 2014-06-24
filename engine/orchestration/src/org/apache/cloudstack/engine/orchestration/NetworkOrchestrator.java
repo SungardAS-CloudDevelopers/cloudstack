@@ -639,13 +639,19 @@ public class NetworkOrchestrator extends ManagerBase implements NetworkOrchestra
             final List<NetworkVO> networks = new ArrayList<NetworkVO>();
 
             long related = -1;
+<<<<<<< HEAD
 
             for (final NetworkGuru guru : networkGurus) {
+=======
+            //Loop through the gurus
+            for (final NetworkGuru guru : _networkGurus) {
+>>>>>>> df53871... Still more changes to scripts and Java. Need to next find the best way to set up parameters to low level router, CRUD
                 final Network network = guru.design(offering, plan, predefined, owner);
                 if (network == null) {
                     continue;
                 }
-
+                //Check for newly created network then if so add the NetworkVO to list else use
+                //the networkVO found by the networksDao.
                 if (network.getId() != -1) {
                     if (network instanceof NetworkVO) {
                         networks.add((NetworkVO)network);
@@ -654,12 +660,13 @@ public class NetworkOrchestrator extends ManagerBase implements NetworkOrchestra
                     }
                     continue;
                 }
-
+                //get next network unique id
+                //if first time through capture id
                 final long id = _networksDao.getNextInSequence(Long.class, "id");
                 if (related == -1) {
                     related = id;
                 }
-
+                //use id as related file for new NetworkVO
                 final long relatedFile = related;
                 Transaction.execute(new TransactionCallbackNoReturn() {
                     @Override

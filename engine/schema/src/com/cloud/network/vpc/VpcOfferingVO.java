@@ -82,6 +82,17 @@ public class VpcOfferingVO implements VpcOffering {
 
 
     public VpcOfferingVO(String name, String displayText, Long serviceOfferingId,boolean isRedundant) {
+        this(name,displayText,true,serviceOfferingId,isRedundant);
+    }
+
+    public VpcOfferingVO(String name, String displayText, Long serviceOfferingId) {
+        this(name,displayText,serviceOfferingId,false);
+    }
+    public VpcOfferingVO(String name, String displayText, boolean isDefault, Long serviceOfferingId) {
+        this(name,displayText,isDefault,serviceOfferingId,false);
+    }
+
+    public VpcOfferingVO(String name, String displayText, boolean isDefault, Long serviceOfferingId,boolean isRedundant) {
         this.name = name;
         this.displayText = displayText;
         this.uniqueName = name;

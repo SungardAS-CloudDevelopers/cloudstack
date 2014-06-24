@@ -3803,8 +3803,16 @@ public class VirtualNetworkApplianceManagerImpl extends ManagerBase implements V
         }
         return applyRules(network, routers, "ip association", false, null, false, new RuleApplier() {
             @Override
+<<<<<<< HEAD
             public boolean execute(final Network network, final VirtualRouter router) throws ResourceUnavailableException {
                 final Commands cmds = new Commands(Command.OnError.Continue);
+=======
+            public boolean execute(Network network, VirtualRouter router) throws ResourceUnavailableException {
+                Commands cmds = new Commands(Command.OnError.Continue);
+                //this method call creates a list of commands to associate an IP to a router
+                //the list of command is returned in cmds parameter, then passed to the
+                //sendCommandsToRouter method
+>>>>>>> df53871... Still more changes to scripts and Java. Need to next find the best way to set up parameters to low level router, CRUD
                 createAssociateIPCommands(router, ipAddress, cmds, 0);
                 return sendCommandsToRouter(router, cmds);
             }

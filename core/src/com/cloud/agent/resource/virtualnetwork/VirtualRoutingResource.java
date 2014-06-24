@@ -783,12 +783,13 @@ public class VirtualRoutingResource {
         }
         return  routerProxy("monitor_service.sh", routerIP, args);
     }
-    //TODO Flesh out this stub for redundant call to vpc_guestnw.sh
+    //Backward compatability method.
     public String assignGuestNetwork(final String dev, final String routerIP,
             final String routerGIP, final String gateway, final String cidr,
-            final String netmask, final String dns, final String domainName, final boolean isRedundant) {
-    return "";
+            final String netmask, final String dns, final String domainName) {
+    return assignGuestNetwork(dev,routerIP,routerGIP,gateway,cidr,netmask,dns,domainName, false,null,null);
     }
+<<<<<<< HEAD
 
 
     public String assignGuestNetwork(final String dev, final String routerIP,
@@ -806,6 +807,40 @@ public class VirtualRoutingResource {
             args +=" -C";
         }
         args += " -M " + nic.getMac();
+=======
+    //Called when redundant VPC router is needed.
+    public String assignGuestNetwork(final String dev, final String routerIP,
+            final String routerGIP, final String gateway, final String cidr,
+            final String netmask, final String dns, final String domainName, final boolean isRedundant,
+            String redundantRouterIP,String redundantRouterDeviceName) {
+/**
+        #Flags
+        #
+        #-C Create guest network
+        #-D Destroy guest network
+        #-R Redundant router required used for Create and Destroy
+        #   this flag should be set if a network to be Created must be redundant
+        #   or if the network is to be Destroyed AND the network
+        #   has a redundant router pair this script will not check for redundant router
+        #   pairs on a network.
+        #
+        #Parameters $OPTARG will contain current value of parameter
+        #
+        #An associated flag will be set if parameter value is detected
+        #No tests for validity are performed on parameter values
+        #-n ip subnet
+        #-m network mask
+        #-d device name
+        #-i ip address
+        #-g gateway address
+        #-s DNS Server
+        #-e Domain Name
+        #-r Redundant Router ip address
+        #-p Redundant Router Device name
+        # -R redundant router needed flag.
+        **/
+        String args = " -C";
+>>>>>>> df53871... Still more changes to scripts and Java. Need to next find the best way to set up parameters to low level router, CRUD
         args += " -d " + dev;
         args += " -i " + routerGIP;
         args += " -g " + gateway;
@@ -817,9 +852,19 @@ public class VirtualRoutingResource {
         if (domainName != null && !domainName.isEmpty()) {
             args += " -e " + domainName;
         }
+<<<<<<< HEAD
 
         cfg.add(new ConfigItem(VRScripts.VPC_GUEST_NETWORK, args));
         return cfg;
+=======
+        if (isRedundant){
+            args = " -R";
+            args += " -r "+redundantRouterIP;
+            args += " -p "+redundantRouterDeviceName;
+            
+        }
+        return routerProxy("vpc_guestnw.sh", routerIP, args);
+>>>>>>> df53871... Still more changes to scripts and Java. Need to next find the best way to set up parameters to low level router, CRUD
     }
 
     protected List<ConfigItem> generateConfig(SetNetworkACLCommand cmd) {
