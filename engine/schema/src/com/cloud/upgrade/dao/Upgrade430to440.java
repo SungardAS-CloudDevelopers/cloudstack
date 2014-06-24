@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // Licensed to the Apache Software Foundation (ASF) under one
 // or more contributor license agreements.  See the NOTICE file
 // distributed with this work for additional information
@@ -15,10 +16,13 @@
 // specific language governing permissions and limitations
 // under the License.
 
+=======
+>>>>>>> a485896... Added vpc redundant to data base and updated SQL change files
 package com.cloud.upgrade.dao;
 
 import java.io.File;
 import java.sql.Connection;
+<<<<<<< HEAD
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,24 +31,42 @@ import org.apache.log4j.Logger;
 
 import com.cloud.network.Network;
 import com.cloud.network.Networks.BroadcastDomainType;
+=======
+
+>>>>>>> a485896... Added vpc redundant to data base and updated SQL change files
 import com.cloud.utils.exception.CloudRuntimeException;
 import com.cloud.utils.script.Script;
 
 public class Upgrade430to440 implements DbUpgrade {
+<<<<<<< HEAD
     final static Logger s_logger = Logger.getLogger(Upgrade430to440.class);
 
     @Override
     public String[] getUpgradableVersionRange() {
+=======
+
+    @Override
+    public String[] getUpgradableVersionRange() {
+
+>>>>>>> a485896... Added vpc redundant to data base and updated SQL change files
         return new String[] {"4.3.0", "4.4.0"};
     }
 
     @Override
     public String getUpgradedVersion() {
+<<<<<<< HEAD
+=======
+        // TODO Auto-generated method stub
+>>>>>>> a485896... Added vpc redundant to data base and updated SQL change files
         return "4.4.0";
     }
 
     @Override
     public boolean supportsRollingUpgrade() {
+<<<<<<< HEAD
+=======
+
+>>>>>>> a485896... Added vpc redundant to data base and updated SQL change files
         return false;
     }
 
@@ -52,14 +74,22 @@ public class Upgrade430to440 implements DbUpgrade {
     public File[] getPrepareScripts() {
         String script = Script.findScript("", "db/schema-430to440.sql");
         if (script == null) {
+<<<<<<< HEAD
             throw new CloudRuntimeException("Unable to find db/schema-4310to440.sql");
         }
 
         return new File[] {new File(script)};
+=======
+            throw new CloudRuntimeException("Unable to find db/schema-430to440.sql");
+        }
+
+        return new File[] { new File(script) };
+>>>>>>> a485896... Added vpc redundant to data base and updated SQL change files
     }
 
     @Override
     public void performDataMigration(Connection conn) {
+<<<<<<< HEAD
         secondaryIpsAccountAndDomainIdsUpdate(conn);
         moveCidrsToTheirOwnTable(conn);
         addExtractTemplateAndVolumeColumns(conn);
@@ -225,6 +255,10 @@ public class Upgrade430to440 implements DbUpgrade {
             throw new CloudRuntimeException("Unable to update vlan URIs ", e);
         }
         s_logger.debug("Done updateing vlan URIs");
+=======
+        // TODO Auto-generated method stub
+
+>>>>>>> a485896... Added vpc redundant to data base and updated SQL change files
     }
 
     @Override
@@ -234,6 +268,12 @@ public class Upgrade430to440 implements DbUpgrade {
             throw new CloudRuntimeException("Unable to find db/schema-430to440-cleanup.sql");
         }
 
+<<<<<<< HEAD
         return new File[] {new File(script)};
     }
+=======
+        return new File[] { new File(script) };
+    }
+
+>>>>>>> a485896... Added vpc redundant to data base and updated SQL change files
 }

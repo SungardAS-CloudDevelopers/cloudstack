@@ -58,6 +58,9 @@ public class VpcOfferingVO implements VpcOffering {
     @Column(name = "default")
     boolean isDefault = false;
 
+    @Column(name = "redundant")
+    boolean isRedundant = false;
+
     @Column(name = GenericDao.REMOVED_COLUMN)
     Date removed;
 
