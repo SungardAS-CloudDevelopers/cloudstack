@@ -80,18 +80,19 @@ public class VpcOfferingVO implements VpcOffering {
         this.uuid = UUID.randomUUID().toString();
     }
 
-    public VpcOfferingVO(String name, String displayText, Long serviceOfferingId) {
+
+    public VpcOfferingVO(String name, String displayText, Long serviceOfferingId,boolean isRedundant) {
         this.name = name;
         this.displayText = displayText;
         this.uniqueName = name;
         this.serviceOfferingId = serviceOfferingId;
         this.uuid = UUID.randomUUID().toString();
         this.state = State.Disabled;
+        this.isRedundant = isRedundant;
     }
 
-    public VpcOfferingVO(String name, String displayText, boolean isDefault, Long serviceOfferingId,
-                         boolean supportsDistributedRouter, boolean offersRegionLevelVPC) {
-        this(name, displayText, serviceOfferingId);
+    public VpcOfferingVO(String name, String displayText, boolean isDefault, Long serviceOfferingId,boolean isRedundant) {
+        this(name, displayText, serviceOfferingId, isRedundant);
         this.isDefault = isDefault;
         this.supportsDistributedRouter = supportsDistributedRouter;
         this.offersRegionLevelVPC = offersRegionLevelVPC;
@@ -129,6 +130,10 @@ public class VpcOfferingVO implements VpcOffering {
     @Override
     public boolean isDefault() {
         return isDefault;
+    }
+    @Override
+    public boolean isRedundant() {
+        return isRedundant;
     }
 
     public void setUniqueName(String uniqueName) {
