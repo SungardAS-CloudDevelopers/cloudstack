@@ -816,6 +816,11 @@ setup_apache2() {
   echo "Options -Indexes" > /var/www/html/.htaccess
 }
 
+setup_redundant_vpcrouter(){
+	# One level of indirection in case we need specific things for redundant vpc routers.
+	setup_redundant_router()
+}
+
 setup_redundant_router() {
     rrouter_bin_path="/ramdisk/rrouter"
     rrouter_log="/ramdisk/rrouter/keepalived.log"
@@ -882,6 +887,29 @@ setup_redundant_router() {
     fi
 }
 
+set_oldmd5(){
+
+  oldmd5=
+  [ -f "/etc/udev/rules.d/70-persistent-net.rules" ] && oldmd5=$(md5sum "/etc/udev/rules.d/70-persistent-net.rules" | awk '{print $1}')
+}
+
+check_md5(){
+	  if [ "$NIC_MACS" != "" ]
+  then
+    init_interfaces_orderby_macs "$NIC_MACS" "/tmp/interfaces" "/tmp/udev-rules"
+	   newmd5=$(md5sum "/tmp/udev-rules" | awk '{print $1}')
+    rm /tmp/interfaces
+    rm /tmp/udev-rules
+    
+    if [ "$oldmd5" != "$newmd5" ]
+    then
+      log_it "udev NIC assignment requires reboot to take effect"
+      sync
+      sleep 2
+      reboot
+    fi
+fi
+}
 setup_aesni() {
   if [ `grep aes /proc/cpuinfo | wc -l` -gt 0 ]
   then
@@ -892,8 +920,8 @@ setup_aesni() {
 setup_router() {
   log_it "Setting up virtual router system vm"
 
-  oldmd5=
-  [ -f "/etc/udev/rules.d/70-persistent-net.rules" ] && oldmd5=$(md5sum "/etc/udev/rules.d/70-persistent-net.rules" | awk '{print $1}')
+	set_oldmd5
+ 
   
   if [ -n "$ETH2_IP" ]
   then
@@ -923,21 +951,7 @@ setup_router() {
   fi
   
   log_it "Checking udev NIC assignment order changes"
-  if [ "$NIC_MACS" != "" ]
-  then
-    init_interfaces_orderby_macs "$NIC_MACS" "/tmp/interfaces" "/tmp/udev-rules"
-    newmd5=$(md5sum "/tmp/udev-rules" | awk '{print $1}')
-    rm /tmp/interfaces
-    rm /tmp/udev-rules
-    
-    if [ "$oldmd5" != "$newmd5" ]
-    then
-      log_it "udev NIC assignment requires reboot to take effect"
-      sync
-      sleep 2
-      reboot
-    fi
-  fi
+check_md5
   
   setup_aesni
   setup_dnsmasq
@@ -970,7 +984,7 @@ setup_vpcrouter() {
   if [ -f /etc/hosts ]; then
     grep -q $NAME /etc/hosts || echo "127.0.0.1 $NAME" >> /etc/hosts;
   fi
-
+set_oldmd5
     cat > /etc/network/interfaces << EOF
 auto lo eth0
 iface lo inet loopback
@@ -1026,7 +1040,13 @@ EOF
   sudo echo "251 static_route_back" >> /etc/iproute2/rt_tables 2>/dev/null
   sudo ip rule add from $VPCCIDR table static_route 2>/dev/null
   sudo ip rule add from $VPCCIDR table static_route_back 2>/dev/null
+ 
+ if [ -n "$ETH2_IP" -a "$RROUTER" == "1" ]
+  then
+    setup_redundant_vpcrouter
+  fi
 
+ check_md5()
   setup_vpc_apache2
 
   enable_svc dnsmasq 1
