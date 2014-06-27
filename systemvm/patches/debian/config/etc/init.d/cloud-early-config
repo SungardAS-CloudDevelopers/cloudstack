@@ -818,7 +818,7 @@ setup_apache2() {
 
 setup_redundant_vpcrouter(){
 	# One level of indirection in case we need specific things for redundant vpc routers.
-	setup_redundant_router()
+	setup_redundant_router
 }
 
 setup_redundant_router() {
@@ -1309,7 +1309,7 @@ start() {
 }
 
 disable_hvc
-
+#Force parameters into cmdline here to test this script on startup.
 parse_cmd_line() {
 CMDLINE=$(cat /var/cache/cloud/cmdline)
 TYPE="unknown"
