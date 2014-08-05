@@ -2719,12 +2719,11 @@ public class UserVmManagerImpl extends ManagerBase implements UserVmManager, Vir
 
         // Special case for simulator as we need to be able to simulator other types of hypervisors
         HypervisorType hypervisorType = null;
-        if (template.getHypervisorType() == null || template.getHypervisorType() == HypervisorType.None || hypervisor == HypervisorType.Simulator) {
+        if (template.getHypervisorType() == null || template.getHypervisorType() == HypervisorType.None || template.getHypervisorType() == HypervisorType.Simulator) {
             hypervisorType = hypervisor;
         } else {
             if (hypervisor != null && hypervisor != HypervisorType.None && hypervisor != template.getHypervisorType()) {
-                throw new InvalidParameterValueException("Hypervisor passed to the deployVm call ( " + hypervisor.toString()
-                        + " ), is different from the hypervisor type of the template ( " + template.getHypervisorType().toString() + " )");
+                throw new InvalidParameterValueException("Hypervisor type passed to the deployVm call is different from the hypervisor type of the template");
             }
             hypervisorType = template.getHypervisorType();
         }
