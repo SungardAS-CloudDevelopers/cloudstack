@@ -2,6 +2,7 @@
 
 import git
 import os
+import traceback
 
 '''
 The intent of this script is to sync two remotes, where one remote has local branches,
@@ -36,11 +37,12 @@ try :
     
     # return the name of the branch, splitting off the origin location from the string.
     def branch_name(ref):
-        try:
-            return str(ref).split('/', 1)[1]
-        # heads:
-        except:
-            return str(ref)
+        return str(ref)
+    
+    def strip_remote(ref):
+        split_on_slashies = str(ref).split('/', 1)[1:]
+        joined_on_slashies = "/".join(split_on_slashies)
+        return (joined_on_slashies)
     
     # debugging options:
     if True:
@@ -61,8 +63,6 @@ try :
     sungardas_repo.fetch()
     upstream_repo.fetch()
     
-    branches_to_push = []
-    
     # point the repo to the 'main branch'
     try:
         # decouple if already pointing to it:
@@ -75,17 +75,14 @@ try :
         
     # point the repo to this main branch:
     repo.head.reference = repo.create_head(path = main_branch, commit = upstream_repo.refs[main_branch])
-    
-    # do we have to push this branch?:
-    if sungardas_repo.refs[main_branch].commit != repo.refs[main_branch]:
-        branches_to_push.append(repo.head.reference)
-    
+
     # delete the other things in the local repo, to ensure proper branch cleanliness:
     [repo.delete_head(branch, force = True) for branch in repo.heads if str(branch) not in [main_branch, head_reference]]
     
     # Collect a list of all of the upstream branches:
-    upstream_branches = [branch_name(branch) for branch in upstream_repo.refs]
-    sungardas_branches = [branch_name(branch) for branch in  sungardas_repo.refs]
+    upstream_branches = [strip_remote(branch) for branch in upstream_repo.refs]
+    
+    sungardas_branches = [strip_remote(branch) for branch in  sungardas_repo.refs]
     
     # Sort the different types of branches using a little bit of set theory
     existing_branches = []
@@ -93,13 +90,18 @@ try :
     
     # deleted + sungardas branches        
     other_branches = [branch for branch in sungardas_branches if branch not in upstream_branches]
-    other_branches.remove(head_reference)
-    
+
+    try :
+        other_branches.remove(head_reference)
+    except :
+        # nothing to see here, move along:
+        pass
+
     # create the new branches into the sungardas mirror:
     for branch in upstream_branches:
          
         #create reference 
-        ref = repo.create_head(path = branch, commit = upstream_repo.refs[branch_name(branch)])
+        ref = repo.create_head(path = branch, commit = upstream_repo.refs[branch])
             
     # force push all created references 
     results = sungardas_repo.push(all=True, force = True)
@@ -132,5 +134,4 @@ try :
     
     print 'done.'
 except:
-    import traceback
     print traceback.format_exc()
