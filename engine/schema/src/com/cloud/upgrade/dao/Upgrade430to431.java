@@ -58,7 +58,12 @@ public class Upgrade430to431 implements DbUpgrade {
 
     @Override
     public File[] getPrepareScripts() {
-        return null;
+        String script = Script.findScript("", "db/schema-430to431.sql");
+        if (script == null) {
+            throw new CloudRuntimeException("Unable to find db/schema-430to431.sql");
+        }
+
+        return new File[] {new File(script)};
     }
 
     @Override
