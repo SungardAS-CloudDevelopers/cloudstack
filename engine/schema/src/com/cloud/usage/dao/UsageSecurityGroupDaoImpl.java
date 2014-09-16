@@ -74,7 +74,7 @@ public class UsageSecurityGroupDaoImpl extends GenericDaoBase<UsageSecurityGroup
                 }
             }
             txn.commit();
-        } catch (Exception e) {
+        } catch (CloudException e) {
             txn.rollback();
             s_logger.warn("Error updating UsageSecurityGroupVO:"+e.getMessage(), e);
         } finally {
