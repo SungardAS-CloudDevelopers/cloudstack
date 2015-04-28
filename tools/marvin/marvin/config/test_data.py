@@ -224,23 +224,23 @@ test_data = {
         },
     },
     "nw_off_isolated_netscaler": {
-        "name": 'Netscaler',
-        "displaytext": 'Netscaler',
-        "guestiptype": 'Isolated',
-        "supportedservices": 'Dhcp,Dns,SourceNat,PortForwarding,Vpn,Firewall,Lb,UserData,StaticNat',
-        "traffictype": 'GUEST',
-        "availability": 'Optional',
-        "serviceProviderList": {
-            "Dhcp": 'VirtualRouter',
-            "Dns": 'VirtualRouter',
-            "SourceNat": 'VirtualRouter',
-            "PortForwarding": 'VirtualRouter',
-            "Vpn": 'VirtualRouter',
-            "Firewall": 'VirtualRouter',
-            "Lb": 'Netscaler',
-            "UserData": 'VirtualRouter',
-            "StaticNat": 'VirtualRouter',
-        },
+                "name": 'Netscaler',
+                "displaytext": 'Netscaler',
+                "guestiptype": 'Isolated',
+                "supportedservices": 'Dhcp,Dns,SourceNat,PortForwarding,Vpn,Firewall,Lb,UserData,StaticNat',
+                "traffictype": 'GUEST',
+                "availability": 'Optional',
+                "serviceProviderList": {
+                    "Dhcp": 'VirtualRouter',
+                    "Dns": 'VirtualRouter',
+                    "SourceNat": 'VirtualRouter',
+                    "PortForwarding": 'VirtualRouter',
+                    "Vpn": 'VirtualRouter',
+                    "Firewall": 'VirtualRouter',
+                    "Lb": 'Netscaler',
+                    "UserData": 'VirtualRouter',
+                    "StaticNat": 'VirtualRouter',
+                },
     },
     "nw_off_isolated_persistent": {
         "name": 'Test Nw off isolated persistent',
@@ -889,12 +889,12 @@ test_data = {
         "dpd": "false"
     },
     "vlan_ip_range": {
-        "startip": "",
-        "endip": "",
-        "netmask": "",
-        "gateway": "",
-        "forvirtualnetwork": "false",
-        "vlan": "untagged",
+                "startip": "",
+                "endip": "",
+                "netmask": "",
+                "gateway": "",
+                "forvirtualnetwork": "false",
+                "vlan": "untagged",
     },
     "ostype": "CentOS 5.6 (64-bit)",
     "sleep": 90,
@@ -1737,4 +1737,6 @@ test_data = {
                     "mode": 'HTTP_DOWNLOAD'
                 }
         }
+    }
 }
+
